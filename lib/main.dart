@@ -43,9 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final auth = FirebaseAuth.instance;
 
 
-  // AuthenticationService authenticationService =
-  //     AuthenticationService(firebaseAuth: FirebaseAuth.instance);
-  // final GoogleSignIn googleSignIn = GoogleSignIn();
+  //Deklaireren von Variablen
   String email;
   String password;
   String message = "";
