@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "821061289366",
+    "project_id": "epilepsia-8e4dc",
+    "storage_bucket": "epilepsia-8e4dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821061289366:android:af5584652ead3a85fbc9b7",
+        "android_client_info": {
+          "package_name": "com.fallstudie.epilepsia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "821061289366-ld3jfs61ku39n31k0qoshagvk5q52svq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiM0v71cD_WGTuMTkO5uQBrCw6BTwY8o8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "821061289366-ld3jfs61ku39n31k0qoshagvk5q52svq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
