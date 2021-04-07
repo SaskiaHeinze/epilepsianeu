@@ -1,13 +1,13 @@
-import 'package:epilepsia/Daily/daily.dart';
+import 'package:epilepsia/Sport/sport.dart';
 import 'package:epilepsia/Home/home.dart';
 import 'package:epilepsia/Medication/medication.dart';
-import 'package:epilepsia/Symptoms/symptoms.dart';
+import 'package:epilepsia/Health/routing.dart';
 import 'package:epilepsia/login/loginview.dart';
 import 'package:epilepsia/login/signup.dart';
 import 'package:flutter/material.dart';
 
 const String routeHome = '/home';
-const String routeSymptoms = '/symptoms';
+const String routeHealth = '/routing';
 const String routeDaily = '/daily';
 const String routeMedication = '/medication';
 const String routeLogin = '/';
@@ -23,8 +23,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => MedicationWidget());
       case routeDaily:
         return MaterialPageRoute(builder: (_) => Daily());
-      case routeSymptoms:
-        return MaterialPageRoute(builder: (_) => Symptoms());
+      case routeHealth:
+        return MaterialPageRoute(builder: (_) => Routing());
       case routeLogin:
         return MaterialPageRoute(builder: (_) => Home());
       case routePrimaryHome:

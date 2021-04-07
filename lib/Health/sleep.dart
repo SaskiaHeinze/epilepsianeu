@@ -1,5 +1,5 @@
 import 'package:epilepsia/model/healthy/sleep.dart';
-import 'package:epilepsia/model/healthy/stimmung.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +28,7 @@ class _SleepState extends State<SleepWidget> {
   TimeOfDay endDate = TimeOfDay.now();
   String minute = "";
   String hours = "";
-  String zeit = "";
+  String sleepDuration = "";
 
   @override
   void initState() {
@@ -39,13 +39,13 @@ class _SleepState extends State<SleepWidget> {
   Widget build(BuildContext context) {
     DateFormat format = DateFormat('dd.MM.yyyy');
      if (hours != "" && minute != "") {
-      zeit = "Dauer: " + hours + ":" + minute;
+      sleepDuration = "Dauer: " + hours + ":" + minute;
     } else if (hours == "" && minute != "") {
-      zeit = "Dauer: " + "00:" + minute;
+      sleepDuration = "Dauer: " + "00:" + minute;
     } else if (hours != "" && minute == "") {
-      zeit = "Dauer: " + hours + ":00";
+      sleepDuration = "Dauer: " + hours + ":00";
     } else {
-      zeit = "";
+      sleepDuration = "";
     }
    
 
@@ -135,7 +135,7 @@ class _SleepState extends State<SleepWidget> {
           Align(
             alignment: Alignment.bottomLeft,
             child: Text(
-              zeit,
+              sleepDuration,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
@@ -159,7 +159,7 @@ class _SleepState extends State<SleepWidget> {
             children: [
               StatusWidget(
                 widget.key,
-                'schlaf',
+                'sleep',
                 'Ausgeruht',
                 0xeae2,
                 Colors.amberAccent[700],
@@ -168,7 +168,7 @@ class _SleepState extends State<SleepWidget> {
               ),
               StatusWidget(
                 widget.key,
-                'schlaf',
+                'sleep',
                 'Neutral',
                 0xe42d,
                 Colors.amberAccent[700],
@@ -177,7 +177,7 @@ class _SleepState extends State<SleepWidget> {
               ),
               StatusWidget(
                 widget.key,
-                'schlaf',
+                'sleep',
                 'Insomnie',
                 59566,
                 Colors.amberAccent[700],
@@ -186,7 +186,7 @@ class _SleepState extends State<SleepWidget> {
               ),
               StatusWidget(
                 widget.key,
-                'schlaf',
+                'sleep',
                 'Albträume',
                 59222,
                 Colors.amberAccent[700],
@@ -197,7 +197,7 @@ class _SleepState extends State<SleepWidget> {
           ),
           ElevatedButton.icon(
             onPressed: () {
-              saveSleep(statusList, dateTimeDay, zeit);
+              saveSleep(statusList, dateTimeDay, sleepDuration);
               // Respond to button press
             },
             icon: Icon(Icons.add, size: 18),
@@ -218,19 +218,19 @@ class _SleepState extends State<SleepWidget> {
   }
 
   void saveSleep(
-      List<StatusIcons> statusList, DateTime dateTimeDay, String dauerSchlaf) {
+      List<StatusIcons> statusList, DateTime dateTimeDay, String durationSleep) {
          final User user = FirebaseAuth.instance.currentUser;
       final uid= user.uid;
     StatusIcons sleep =
-        statusList.firstWhere((element) => element.id == "schlaf");
-    Sleep sleepi = new Sleep(
+        statusList.firstWhere((element) => element.id == "sleep");
+    Sleep sleepclass = new Sleep(
         userid: uid,
-        datum: dateTimeDay,
-        dauerSchlaf: dauerSchlaf,
+        date: dateTimeDay,
+        durationSleep: durationSleep,
         sleepicon: sleep);
-    print(sleepi);
-    print(sleepi.toJson());
-    sleepSetup(sleepi);
+    print(sleepclass);
+    print(sleepclass.toJson());
+    sleepSetup(sleepclass);
     print(statusList[0].toJson());
   }
 }

@@ -19,6 +19,7 @@ class _MedicationState extends State<MedicationWidget> {
   length: 2,
   child: Scaffold(
     appBar: AppBar(
+      backgroundColor: Colors.red[300],
       bottom: TabBar(
         indicatorColor: Colors.black,
         indicatorSize: TabBarIndicatorSize.label,

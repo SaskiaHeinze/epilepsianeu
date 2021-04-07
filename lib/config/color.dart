@@ -15,13 +15,6 @@ Map<int, Color> color =
 900:Color.fromRGBO(136,14,79, 1),
 };
 
-
-
-
-MaterialColor hellblau = MaterialColor(0xFF8FCDFF, color);
-
-MaterialColor dunkelblau = MaterialColor(0xFF0B005D, color);
-
 MaterialColor background = MaterialColor(0xFFBDBDBD, color);
 
 

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:epilepsia/model/healthy/stimmung.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 import 'package:epilepsia/config/widget/widget.dart';
 import 'package:epilepsia/model/medication/medication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,14 +25,14 @@ class _AddMedicationState extends State<AddMedication> {
   List<bool> _values = [true, false, true, false, false];
   final dateController = TextEditingController();
   final dateController1 = TextEditingController();
-  List<String> wiederholung = <String>["Täglich", "Wöchentlich"];
-  String _dropDownWiederholung;
+  List<String> repeat = <String>["Täglich", "Wöchentlich"];
+  String _dropDownrepeat;
   final timeController = TextEditingController();
   final timeController1 = TextEditingController();
   final timeController2 = TextEditingController();
   int itemCount = 0;
   TextEditingController nameControllername = TextEditingController();
-  TextEditingController nameControllerdosis = TextEditingController();
+  TextEditingController nameControllerdose = TextEditingController();
   TextEditingController nameControllerplan = TextEditingController();
   TextEditingController nameControllertext = TextEditingController();
   DateTime dateTimeDay1;
@@ -42,8 +42,8 @@ class _AddMedicationState extends State<AddMedication> {
   List<String> timeOfDayTimeList = [];
 
   String fullName = '';
-  String fullNameDosis = '';
-  String fullNameErinnerung = '';
+  String fullNameDose = '';
+  String fullNameReminder = '';
   List<StatusIcons> statusList = <StatusIcons>[];
 
   @override
@@ -73,7 +73,7 @@ class _AddMedicationState extends State<AddMedication> {
                     });
                   }),
               TextField(
-                  controller: nameControllerdosis,
+                  controller: nameControllerdose,
                   decoration: InputDecoration(
                     suffixIcon: Icon(Icons.drive_file_rename_outline),
                     border: OutlineInputBorder(),
@@ -81,7 +81,7 @@ class _AddMedicationState extends State<AddMedication> {
                   ),
                   onChanged: (text) {
                     setState(() {
-                      fullNameDosis = text;
+                      fullNameDose = text;
                     });
                   }),
               Align(
@@ -150,7 +150,7 @@ class _AddMedicationState extends State<AddMedication> {
                 children: [
                   StatusWidget(
                     widget.key,
-                    'farbe',
+                    'color',
                     '',
                     57594,
                     Colors.red[300],
@@ -158,7 +158,7 @@ class _AddMedicationState extends State<AddMedication> {
                   ),
                   StatusWidget(
                     widget.key,
-                    'farbe',
+                    'color',
                     '',
                     57594,
                     Colors.teal[300],
@@ -166,7 +166,7 @@ class _AddMedicationState extends State<AddMedication> {
                   ),
                   StatusWidget(
                     widget.key,
-                    'farbe',
+                    'color',
                     '',
                     57594,
                     Colors.amberAccent[700],
@@ -174,7 +174,7 @@ class _AddMedicationState extends State<AddMedication> {
                   ),
                   StatusWidget(
                     widget.key,
-                    'farbe',
+                    'color',
                     '',
                     57594,
                     Colors.teal[700],
@@ -201,15 +201,15 @@ class _AddMedicationState extends State<AddMedication> {
                     margin:
                         EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
                     child: DropdownButton(
-                      hint: _dropDownWiederholung == null
+                      hint: _dropDownrepeat == null
                           ? Text('')
                           : Text(
-                              _dropDownWiederholung,
+                              _dropDownrepeat,
                               style: TextStyle(color: Colors.blue),
                             ),
                       iconSize: 30.0,
                       style: TextStyle(color: Colors.blue),
-                      items: wiederholung.map(
+                      items: repeat.map(
                         (val) {
                           return DropdownMenuItem<String>(
                             value: val,
@@ -220,7 +220,7 @@ class _AddMedicationState extends State<AddMedication> {
                       onChanged: (val) {
                         setState(
                           () {
-                            _dropDownWiederholung = val;
+                            _dropDownrepeat = val;
                           },
                         );
                       },
@@ -347,14 +347,14 @@ class _AddMedicationState extends State<AddMedication> {
                     ),
                     onChanged: (text) {
                       setState(() {
-                        fullNameErinnerung = text;
+                        fullNameReminder = text;
                       });
                     }),
               ),
               ElevatedButton.icon(
                 onPressed: () {
-                  saveMedication(null, fullName, fullNameDosis, statusList,
-                      _dropDownWiederholung, dateTimeDay1, dateTimeDay);
+                  saveMedication(fullName, fullNameDose, statusList,
+                      _dropDownrepeat, dateTimeDay1, dateTimeDay);
                 },
                 icon: Icon(Icons.add, size: 18),
                 label: Text("Hinzufügen"),
@@ -371,26 +371,26 @@ class _AddMedicationState extends State<AddMedication> {
 }
 
 void saveMedication(
-    String userid,
+   // String userid,
     String name,
-    String dosis,
+    String dose,
     List<StatusIcons> statusList,
-    String wiederholungen,
-    DateTime startdatum,
-    DateTime enddatum) {
+    String repeat,
+    DateTime begin,
+    DateTime end) {
   final User user = FirebaseAuth.instance.currentUser;
   final uid = user.uid;
   StatusIcons icon = statusList.firstWhere((element) => element.id == "pill");
-  StatusIcons farbe = statusList.firstWhere((element) => element.id == "farbe");
+  StatusIcons color = statusList.firstWhere((element) => element.id == "color");
   Medication medication = new Medication(
     userid: uid,
     name: name,
-    dosis: dosis,
+    dose: dose,
     icon: icon,
-    farbe: farbe,
-    wiederholungen: wiederholungen,
-    startdatum: startdatum,
-    enddatum: enddatum,
+    color: color,
+    repeat: repeat,
+    begin: begin,
+    end: end,
   );
   print(medication.toJson());
   medicationSetup(medication);

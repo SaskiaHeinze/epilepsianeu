@@ -1,35 +1,35 @@
-import 'package:epilepsia/model/healthy/stimmung.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 import 'package:flutter/material.dart';
 
 class Sport {
   String userid;
-  TimeOfDay uhrzeit;
-  String sportdauer;
-  StatusIcons sportart;
-  DateTime datum;
+  TimeOfDay time;
+  String durationSport;
+  StatusIcons sportIcon;
+  DateTime date;
 
-  Sport({this.userid, this.uhrzeit, this.sportdauer,this.sportart,this.datum,});
+  Sport({this.userid, this.time, this.durationSport,this.sportIcon,this.date,});
 
   factory Sport.fromJson(Map<String, dynamic> data) {
     DateTime _datumfirebase = data['datum'].toDate();
-    var datum = data['datum'].toDate();
+    var date = data['date'].toDate();
     var uhrZeit = data["uhrZeit"];
     return Sport(
       userid: data['id'],
-      sportdauer: data['sportdauer'],
-      sportart: StatusIcons.fromJson(data['sportart']),
-      datum: datum,
+      durationSport: data['sportDuration'],
+      sportIcon: StatusIcons.fromJson(data['SportIcon']),
+      date: date,
     );
   }
 
   Map<String, dynamic> toJson() {
-    Map _sportart = this.sportart != null ? this.sportart.toJson() : null;
+    Map _sport = this.sportIcon != null ? this.sportIcon.toJson() : null;
     return {
       'id': userid,
-      'uhrZeit': uhrzeit.toString(),
-      'sportdauer' : sportdauer,
-      'sportart': _sportart,
-       'datum': datum,
+      'uhrZeit': time.toString(),
+      'sportDuration' : durationSport,
+      'SportIcon': _sport,
+       'datum': date,
     };
   }
 }

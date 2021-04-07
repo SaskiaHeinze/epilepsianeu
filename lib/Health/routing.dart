@@ -1,15 +1,15 @@
-import 'package:epilepsia/Symptoms/attack.dart';
-import 'package:epilepsia/Symptoms/sleep.dart';
-import 'package:epilepsia/Symptoms/startseite.dart';
+import 'package:epilepsia/Health/attack.dart';
+import 'package:epilepsia/Health/sleep.dart';
+import 'package:epilepsia/Health/stateOfHealth.dart';
 import 'package:flutter/material.dart';
 
-class Symptoms extends StatefulWidget {
-   Symptoms({Key key,}) : super(key: key);
+class Routing extends StatefulWidget {
+   Routing({Key key,}) : super(key: key);
   @override
-  _SymptomsState createState() => _SymptomsState();
+  _RoutingState createState() => _RoutingState();
 }
 
-class _SymptomsState extends State<Symptoms> {
+class _RoutingState extends State<Routing> {
   @override
    Widget build(BuildContext context) {
 
@@ -18,6 +18,7 @@ class _SymptomsState extends State<Symptoms> {
   length: 3,
   child: Scaffold(
     appBar: AppBar(
+      backgroundColor: Colors.teal[300],
       bottom: TabBar(
         indicatorColor: Colors.black,
         indicatorSize: TabBarIndicatorSize.label,
@@ -31,7 +32,7 @@ class _SymptomsState extends State<Symptoms> {
     ),
   body: TabBarView(
            children:[
-             Startseite(),
+             StateOfHealth(),
              Attackwidget(),
              SleepWidget(), ]
  

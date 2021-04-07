@@ -1,22 +1,22 @@
 
-import 'package:epilepsia/model/healthy/stimmung.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 
 
 class Sleep {
   String userid;
-  DateTime datum;
-  String dauerSchlaf;
+  DateTime date;
+  String durationSleep;
   StatusIcons sleepicon;
 
-  Sleep({this.userid, this.datum, this.dauerSchlaf, this.sleepicon});
+  Sleep({this.userid, this.date, this.durationSleep, this.sleepicon});
 
   factory Sleep.fromJson(Map<String, dynamic> data) {
-    DateTime _datumfirebase = data['datum'].toDate();
-    var datum = data['datum'].toDate();
+    DateTime _datumfirebase = data['date'].toDate();
+    var date = data['date'].toDate();
     return Sleep(
       userid: data['id'],
-      datum: datum,
-      dauerSchlaf: data['dauerSchlaf'],
+      date: date,
+      durationSleep: data['durationSleep'],
       sleepicon: StatusIcons.fromJson(data['sleep']),
     );
   }
@@ -25,8 +25,8 @@ class Sleep {
     Map _sleep = this.sleepicon != null ? this.sleepicon.toJson() : null;
     return {
       'id': userid,
-      'datum': datum,
-      'dauerSchlaf' : dauerSchlaf,
+      'datum': date,
+      'durationSleep' : durationSleep,
       'sleep': _sleep,
     };
   }

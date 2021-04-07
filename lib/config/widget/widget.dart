@@ -1,4 +1,4 @@
-import 'package:epilepsia/model/healthy/stimmung.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 import 'package:flutter/material.dart';
 
 class StatusWidget extends StatefulWidget {
@@ -43,8 +43,8 @@ class _StatusWidgetState extends State<StatusWidget> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        margin: EdgeInsets.only(top: 20, bottom: 5, left: 10, right: 10),
-        height: 100,
+        margin: EdgeInsets.only(top: 20, bottom: 1, left: 10, right: 10),
+        height: 125,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -103,15 +103,15 @@ class _StatusWidgetState extends State<StatusWidget> {
             Visibility(
               visible: _isEnable,
               child: Container(
-                margin: EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
+                margin: EdgeInsets.only(top: 5, bottom: 1, left: 5, right: 5),
                 child: Text("Bitte Spiel spielen!!!",style: TextStyle(
-    color: Colors.red[300],)),
+    color: Colors.red[300],fontSize: 13)),
               ),
             ),
             Container(
               margin: EdgeInsets.only(
                 top: 10,
-                bottom: 10,
+                bottom: 5,
               ),
               child: Text(
                 text,

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class Symptome {
+class Symptom {
   String id;
   String name;
   int iconData;
   Color color;
 
-  Symptome({this.id, this.name, this.iconData, this.color});
+  Symptom({this.id, this.name, this.iconData, this.color});
 
-  factory Symptome.fromJson(Map<String, dynamic> data) {
-    return Symptome(
+  factory Symptom.fromJson(Map<String, dynamic> data) {
+    return Symptom(
       id: data['id'],
       name: data['name'],
       iconData: data['iconData'],
-      color: Color(data['symptome'] as int),
+      color: Color(data['symptom'] as int),
     );
   }
 

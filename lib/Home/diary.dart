@@ -3,15 +3,14 @@ import 'package:epilepsia/model/daily/sport.dart';
 import 'package:epilepsia/model/healthy/attack.dart';
 import 'package:epilepsia/model/healthy/sleep.dart';
 import 'package:epilepsia/model/healthy/status.dart';
-import 'package:epilepsia/model/healthy/stimmung.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 import 'package:epilepsia/config/widget/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
- final User user = FirebaseAuth.instance.currentUser;
-     
+final User user = FirebaseAuth.instance.currentUser;
 
 class Diary extends StatefulWidget {
   Diary({
@@ -93,7 +92,7 @@ class _DiaryState extends State<Diary> {
                         itemBuilder: (BuildContext context, int index) {
                           Status item = statusDataList[index];
                           var newFormat = DateFormat("dd-MM-yyyy");
-                          String updatedDt = newFormat.format(item.datum);
+                          String updatedDt = newFormat.format(item.date);
                           return Container(
                             margin: const EdgeInsets.all(15.0),
                             child: Column(children: [
@@ -101,20 +100,18 @@ class _DiaryState extends State<Diary> {
                               Row(children: [
                                 StatusWidget(
                                   widget.key,
-                                  item.stimmung.id,
-                                  item.stimmung.name,
-                                  item.stimmung.iconData,
-                                  item.stimmung.color,
-                                
+                                  item.mood.id,
+                                  item.mood.name,
+                                  item.mood.iconData,
+                                  item.mood.color,
                                   null,
                                 ),
                                 StatusWidget(
                                   widget.key,
-                                  item.symptome.id,
-                                  item.symptome.name,
-                                  item.symptome.iconData,
-                                  item.symptome.color,
-                                  
+                                  item.symptom.id,
+                                  item.symptom.name,
+                                  item.symptom.iconData,
+                                  item.symptom.color,
                                   null,
                                 ),
                                 StatusWidget(
@@ -123,7 +120,6 @@ class _DiaryState extends State<Diary> {
                                   item.stress.name,
                                   item.stress.iconData,
                                   item.stress.color,
-                                  
                                   null,
                                 ),
                               ]),
@@ -151,16 +147,15 @@ class _DiaryState extends State<Diary> {
                               Row(children: [
                                 StatusWidget(
                                   widget.key,
-                                  item.symptome.id,
-                                  item.symptome.name,
-                                  item.symptome.iconData,
-                                  item.symptome.color,
-                               
+                                  item.symptom.id,
+                                  item.symptom.name,
+                                  item.symptom.iconData,
+                                  item.symptom.color,
                                   null,
                                 ),
                               ]),
-                              Text(item.dauer),
-                              Text(item.anfallsart)
+                              Text(item.duration),
+                              Text(item.attackArt)
                             ]),
                           );
                         }),
@@ -188,13 +183,11 @@ class _DiaryState extends State<Diary> {
                                   item.sleepicon.id,
                                   item.sleepicon.name,
                                   item.sleepicon.iconData,
-
                                   item.sleepicon.color,
-                                
                                   null,
                                 ),
                               ]),
-                              Text(item.dauerSchlaf)
+                              Text(item.durationSleep)
                             ]),
                           );
                         }),
@@ -218,15 +211,14 @@ class _DiaryState extends State<Diary> {
                               Row(children: [
                                 StatusWidget(
                                   widget.key,
-                                  item.sportart.id,
-                                  item.sportart.name,
-                                  item.sportart.iconData,
-                                  item.sportart.color,
-                                
+                                  item.sportIcon.id,
+                                  item.sportIcon.name,
+                                  item.sportIcon.iconData,
+                                  item.sportIcon.color,
                                   null,
                                 ),
                               ]),
-                              Text(item.sportdauer),
+                              Text(item.durationSport),
                             ]),
                           );
                         }),
@@ -252,7 +244,6 @@ class _DiaryState extends State<Diary> {
     result.docs.forEach((result) {
       var data = result.data();
       Status status = new Status.fromJson(data);
-
       list.add(status);
     });
 

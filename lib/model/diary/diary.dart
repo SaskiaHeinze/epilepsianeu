@@ -1,21 +1,21 @@
 class Diary {
   String id;
-  DateTime tagesauswahl;
+  DateTime daySelection;
 
-  Diary({this.id, this.tagesauswahl});
+  Diary({this.id, this.daySelection});
 
   factory Diary.fromJson(Map<String, dynamic> data) {
-    DateTime dateTime = DateTime.parse(data['tagesauswahl']);
+    DateTime dateTime = DateTime.parse(data['daySelection']);
     return Diary(
       id: data['id'],
-      tagesauswahl: dateTime,
+      daySelection: dateTime,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'tagesauswahl': tagesauswahl.toIso8601String(),
+      'daySelection': daySelection.toIso8601String(),
     };
   }
 }

@@ -5,8 +5,6 @@ import 'package:epilepsia/Home/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../config/farben.dart';
-
 
 class LoginView extends StatefulWidget {
   @override
@@ -57,7 +55,7 @@ class _LoginViewState extends State<LoginView> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: dunkelblau,
+        selectedItemColor: Colors.black,
         onTap: _onItemTapped,
       ),
     );

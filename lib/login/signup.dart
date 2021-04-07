@@ -1,13 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:epilepsia/Home/calendar.dart';
-import 'package:epilepsia/Home/diary.dart';
-import 'package:epilepsia/Home/home.dart';
-import 'package:epilepsia/Home/settings.dart';
-import 'package:epilepsia/config/farben.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart' hide Router;
-import '../config/farben.dart';
 import '../config/router.dart';
 
 class SignUp extends StatefulWidget {
@@ -36,7 +28,7 @@ class _SignUp extends State<SignUp> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Neuanmeldung"),
-        backgroundColor: hellblau,
+        backgroundColor: Colors.grey[400],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -99,7 +91,7 @@ class _SignUp extends State<SignUp> {
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: Text(
                 message,
-                style: TextStyle(color: hellblau),
+                style: TextStyle(color: Colors.grey[400]),
               ),
             ),
             Container(
@@ -108,7 +100,7 @@ class _SignUp extends State<SignUp> {
               margin: EdgeInsets.all(20),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: hellblau, borderRadius: BorderRadius.circular(5)),
+                  color: Colors.grey[400], borderRadius: BorderRadius.circular(5)),
               child: TextButton(
                 onPressed: () {
                   signUp(email, password, confirm);
@@ -155,7 +147,7 @@ class _SignUp extends State<SignUp> {
                       },
                       child: Text(
                         "Verstanden",
-                        style: TextStyle(color: hellblau),
+                        style: TextStyle(color: Colors.grey[400]),
                       ),
                     ),
                   ],
@@ -178,7 +170,7 @@ class _SignUp extends State<SignUp> {
                       },
                       child: Text(
                         'Verstanden',
-                        style: TextStyle(color: hellblau),
+                        style: TextStyle(color: Colors.grey[400]),
                       ))
                 ],
               ));

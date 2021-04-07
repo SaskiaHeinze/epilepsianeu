@@ -1,5 +1,5 @@
 import 'package:epilepsia/model/healthy/status.dart';
-import 'package:epilepsia/model/healthy/stimmung.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 import 'package:epilepsia/config/widget/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +10,13 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 final timeController = TextEditingController();
 final dateController = TextEditingController();
 
-class Startseite extends StatefulWidget {
-  const Startseite({Key key}) : super(key: key);
+class StateOfHealth extends StatefulWidget {
+  const StateOfHealth({Key key}) : super(key: key);
   @override
-  _StartseiteState createState() => _StartseiteState();
+  _StateOfHealthState createState() => _StateOfHealthState();
 }
 
-class _StartseiteState extends State<Startseite> {
+class _StateOfHealthState extends State<StateOfHealth> {
   List<StatusIcons> statusList = <StatusIcons>[];
 
   TimeOfDay timeOfDayTime;
@@ -89,7 +89,7 @@ class _StartseiteState extends State<Startseite> {
                     children: [
                       StatusWidget(
                         widget.key,
-                        'stimmung',
+                        'mood',
                         'Glücklich',
                         59842,
                         Colors.red[300],
@@ -98,16 +98,16 @@ class _StartseiteState extends State<Startseite> {
                       ),
                       StatusWidget(
                         widget.key,
-                        'stimmung',
+                        'mood',
                         'Neutral',
-                        59840,
+                        59841,
                          Colors.red[300],
                      
                         statusList,
                       ),
                       StatusWidget(
                         widget.key,
-                        'stimmung',
+                        'mood',
                         'Traurig',
                         58361,
                           Colors.red[300],
@@ -116,7 +116,7 @@ class _StartseiteState extends State<Startseite> {
                       ),
                       StatusWidget(
                         widget.key,
-                        'stimmung',
+                        'mood',
                         'Gereizt',
                         58365,
                         Colors.red[300],
@@ -142,7 +142,7 @@ class _StartseiteState extends State<Startseite> {
                     children: [
                       StatusWidget(
                         widget.key,
-                        'symptome',
+                        'symptom',
                         'Zucken',
                         58869,
                         Colors.teal[300],
@@ -151,7 +151,7 @@ class _StartseiteState extends State<Startseite> {
                       ),
                       StatusWidget(
                         widget.key,
-                        'symptome',
+                        'symptom',
                         'Bewusstlos',
                         58419,
                         Colors.teal[300],
@@ -160,7 +160,7 @@ class _StartseiteState extends State<Startseite> {
                       ),
                       StatusWidget(
                         widget.key,
-                        'symptome',
+                        'symptom',
                         'Krämpfe',
                         60118,
                         Colors.teal[300],
@@ -169,7 +169,7 @@ class _StartseiteState extends State<Startseite> {
                       ),
                       StatusWidget(
                         widget.key,
-                        'symptome',
+                        'symptom',
                         'Fieber',
                         58534,
                         Colors.teal[300],
@@ -232,7 +232,7 @@ class _StartseiteState extends State<Startseite> {
                     ],
                   ),
                   Divider(
-                    height: 10,
+                    height: 50,
                     thickness: 3,
                   ),
                 
@@ -262,18 +262,18 @@ class _StartseiteState extends State<Startseite> {
       TimeOfDay timeOfDayTime) {
          final User user = FirebaseAuth.instance.currentUser;
       final uid= user.uid;
-    StatusIcons stimmung =
-        statusList.firstWhere((element) => element.id == "stimmung");
-    StatusIcons symptome =
-        statusList.firstWhere((element) => element.id == "symptome");
+    StatusIcons mood =
+        statusList.firstWhere((element) => element.id == "mood");
+    StatusIcons symptom =
+        statusList.firstWhere((element) => element.id == "symptom");
     StatusIcons stress =
         statusList.firstWhere((element) => element.id == "stress");
     Status status = new Status(
         userid: uid,
-        datum: dateTimeDay,
+        date: dateTimeDay,
         uhrzeit: timeOfDayTime,
-        stimmung: stimmung,
-        symptome: symptome,
+        mood: mood,
+        symptom: symptom,
         stress: stress);
     print(status.toJson());
     statusSetup(status);

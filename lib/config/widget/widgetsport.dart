@@ -1,5 +1,4 @@
-import 'package:epilepsia/model/healthy/stimmung.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 import 'package:flutter/material.dart';
 
 class SportWidget extends StatefulWidget {
@@ -55,8 +54,7 @@ class _SportWidgetState extends State<SportWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: Icon(IconData(iconData, fontFamily: 'MaterialIcons')),
-                color: Colors.black,
+                icon: Icon(IconData(iconData, fontFamily: 'MaterialIcons'),color: Colors.black,),
               ),
               Text(
                 text,

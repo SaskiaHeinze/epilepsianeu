@@ -1,16 +1,15 @@
-//Dauer Sport
-class Dauer {
+class Duration {
   final int id;
-  final String daueritem;
+  final String duration;
 
-  const Dauer(this.id, this.daueritem);
+  const Duration(this.id, this.duration);
 }
 
-const List<Dauer> getDauer = <Dauer>[
-  Dauer(1, '10 Minuten'),
-  Dauer(2, '20 Minuten'),
-  Dauer(3, '30 Minuten'),
-  Dauer(4, '45 Minuten'),
-  Dauer(5, '60 Minuten'),
-  Dauer(6, '90 Minuten'),
+const List<Duration> getDuration = <Duration>[
+  Duration(1, '10 Minuten'),
+  Duration(2, '20 Minuten'),
+  Duration(3, '30 Minuten'),
+  Duration(4, '45 Minuten'),
+  Duration(5, '60 Minuten'),
+  Duration(6, '90 Minuten'),
 ];

@@ -1,4 +1,4 @@
-import 'package:epilepsia/config/farben.dart';
+import 'package:epilepsia/config/color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -172,47 +172,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     if (errorMessage == '') {
       Navigator.pushNamed(context, routePrimaryHome);
-      //print('success');
     }
   }
 }
-// var authReturn =
-//     await authenticationService.signIn(email: email, password: password);
-// if (authReturn == "Success") {
-//   //Check if login was successfull
-//   if (authenticationService.firebaseAuth.currentUser.emailVerified) {
-//     //Check if account is Verified
-//     Navigator.pushAndRemoveUntil(
-//       context,
-//       MaterialPageRoute(builder: (context) => Home()),
-//       (Route<dynamic> route) => false,
-//     );
-//   } else {
-//     //Send a verification Email
-//     await authenticationService.firebaseAuth.currentUser
-//         .sendEmailVerification();
-//     showDialog(
-//       context: context,
-//       builder: (_) => AlertDialog(
-//         title: Text('Account bestätigen!'),
-//         content: Text(
-//             'Überprüfen Sie Ihr Postfach und bestätigen Sie Ihr neues Konto!'),
-//         actions: [
-//           TextButton(
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//             },
-//             child: Text(
-//               "Verstanden",
-//               style: TextStyle(color: hellblau),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// } else {
-//   setState(() {
-//     message = authReturn;
-//   });
-// }

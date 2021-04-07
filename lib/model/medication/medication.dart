@@ -1,77 +1,77 @@
-import 'package:epilepsia/model/healthy/stimmung.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 
 class Medication {
   String userid;
   String name;
-  String dosis;
+  String dose;
   StatusIcons icon;
-  StatusIcons farbe;
-  String wiederholungen;
-  DateTime startdatum;
-  DateTime enddatum;
+  StatusIcons color;
+  String repeat;
+  DateTime begin;
+  DateTime end;
 
   Medication({
     this.userid,
     this.name,
-    this.dosis,
+    this.dose,
     this.icon,
-    this.farbe,
-    this.wiederholungen,
-    this.enddatum,
-    this.startdatum,
+    this.color,
+    this.repeat,
+    this.end,
+    this.begin,
   });
 
   factory Medication.fromJson(Map<String, dynamic> data) {
-    print(data);
-    DateTime enddatum;
-    if (data['enddatum'] == null) {
-      enddatum = null;
+
+    DateTime end;
+    if (data['end'] == null) {
+      end = null;
     } else {
-      enddatum = DateTime.parse(data['enddatum']);
+      end = DateTime.parse(data['end']);
     }
-    DateTime startdatum;
-    if (data['startdatum'] == null) {
-      startdatum = null;
+    DateTime begin;
+    if (data['begin'] == null) {
+      begin = null;
     } else {
-      startdatum = DateTime.parse(data['startdatum']);
+      begin = DateTime.parse(data['begin']);
     }
 
     return Medication(
-      userid: data['userid'],
+      userid: data['id'],
       name: data['name'],
-      dosis: data['dosis'],
+      dose: data['dose'],
       icon: StatusIcons.fromJson(data['icon']),
-      farbe: StatusIcons.fromJson(data['farbe']),
-      wiederholungen: data['wiederholungen'],
-      startdatum: startdatum,
-      enddatum: enddatum,
+      color: StatusIcons.fromJson(data['color']),
+      repeat: data['repeat'],
+      begin: begin,
+      end: end,
     );
   }
 
   Map<String, dynamic> toJson() {
     Map _icon = this.icon != null ? this.icon.toJson() : null;
-    Map _farbe = this.farbe != null ? this.farbe.toJson() : null;
-    var _startdatum;
-    var _enddatum;
-    if (startdatum != null) {
-      _startdatum = startdatum.toIso8601String();
+    Map _color = this.color != null ? this.color.toJson() : null;
+    var _begin;
+    var _end;
+    if (begin != null) {
+      _begin = begin.toIso8601String();
     } else {
-      _startdatum = null;
+      _begin = null;
     }
-    if (enddatum != null) {
-      _enddatum = enddatum.toIso8601String();
+    if (end != null) {
+      _end = end.toIso8601String();
     } else {
-      _enddatum = null;
+      _end = null;
     }
     return {
-      'userid': userid,
+      'id': userid,
       'name': name,
-      'dosis': dosis,
+      'dosis': dose,
       'icon': _icon,
-      'farbe': _farbe,
-      'wiederholungen': wiederholungen,
-      'startdatum': _startdatum,
-      'enddatum': _enddatum,
+      'color': _color,
+      'repeat': repeat,
+      'begin': _begin,
+      'end': _end,
     };
   }
 }

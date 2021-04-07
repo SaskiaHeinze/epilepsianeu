@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epilepsia/model/healthy/attack.dart';
-import 'package:epilepsia/model/healthy/stimmung.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +22,7 @@ class Attackwidget extends StatefulWidget {
 class _AttackwidgetState extends State<Attackwidget> {
   TextEditingController nameController = TextEditingController();
   String fullName = '';
-  List<String> dauer = <String>[
+  List<String> duration = <String>[
     "10 Minuten",
     "20 Minuten",
     "30 Minuten",
@@ -30,7 +30,7 @@ class _AttackwidgetState extends State<Attackwidget> {
     "60 Minuten",
     "90 Minuten"
   ];
-  List<String> anfallsart = <String>[
+  List<String> attackArt = <String>[
     "Vorgefühl",
     "Aura",
     "Fokal klonischer Anfall",
@@ -42,8 +42,8 @@ class _AttackwidgetState extends State<Attackwidget> {
     "Myoklonischer Anfall"
   ];
   List<StatusIcons> statusList = <StatusIcons>[];
-  String _dropDownDauer;
-  String _dropDownAnfallsart;
+  String _dropDownDuration;
+  String _dropDownAttackArt;
   DateTime dateTimeDay;
   TimeOfDay timeOfDayTime;
   String daySelect = "";
@@ -121,15 +121,15 @@ class _AttackwidgetState extends State<Attackwidget> {
                     margin:
                         EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
                     child: DropdownButton(
-                      hint: _dropDownDauer == null
+                      hint: _dropDownDuration == null
                           ? Text('')
                           : Text(
-                              _dropDownDauer,
+                              _dropDownDuration,
                               style: TextStyle(color: Colors.blue),
                             ),
                       iconSize: 30.0,
                       style: TextStyle(color: Colors.blue),
-                      items: dauer.map(
+                      items: duration.map(
                         (val) {
                           return DropdownMenuItem<String>(
                             value: val,
@@ -140,7 +140,7 @@ class _AttackwidgetState extends State<Attackwidget> {
                       onChanged: (val) {
                         setState(
                           () {
-                            _dropDownDauer = val;
+                            _dropDownDuration = val;
                           },
                         );
                       },
@@ -167,15 +167,15 @@ class _AttackwidgetState extends State<Attackwidget> {
                     margin:
                         EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
                     child: DropdownButton(
-                      hint: _dropDownAnfallsart == null
+                      hint: _dropDownAttackArt == null
                           ? Text('')
                           : Text(
-                              _dropDownAnfallsart,
+                              _dropDownAttackArt,
                               style: TextStyle(color: Colors.blue),
                             ),
                       iconSize: 30.0,
                       style: TextStyle(color: Colors.blue),
-                      items: anfallsart.map(
+                      items: attackArt.map(
                         (val) {
                           return DropdownMenuItem<String>(
                             value: val,
@@ -186,7 +186,7 @@ class _AttackwidgetState extends State<Attackwidget> {
                       onChanged: (val) {
                         setState(
                           () {
-                            _dropDownAnfallsart = val;
+                            _dropDownAttackArt = val;
                           },
                         );
                       },
@@ -214,7 +214,7 @@ class _AttackwidgetState extends State<Attackwidget> {
                 children: [
                   StatusWidget(
                     widget.key,
-                    'symptome',
+                    'symptom',
                     'Zucken',
                     58869,
                     Colors.amberAccent[700],
@@ -223,7 +223,7 @@ class _AttackwidgetState extends State<Attackwidget> {
                   ),
                   StatusWidget(
                     widget.key,
-                    'symptome',
+                    'symptom',
                     'Bewusstlos',
                     58419,
                    Colors.amberAccent[700],
@@ -232,7 +232,7 @@ class _AttackwidgetState extends State<Attackwidget> {
                   ),
                   StatusWidget(
                     widget.key,
-                    'symptome',
+                    'symptom',
                     'Krämpfe',
                     60118,
                     Colors.amberAccent[700],
@@ -241,7 +241,7 @@ class _AttackwidgetState extends State<Attackwidget> {
                   ),
                   StatusWidget(
                     widget.key,
-                    'symptome',
+                    'symptom',
                     'Fieber',
                     58534,
                     Colors.amberAccent[700],
@@ -271,7 +271,7 @@ class _AttackwidgetState extends State<Attackwidget> {
               ElevatedButton.icon(
                 onPressed: () {
                   saveAttack(statusList, dateTimeDay, timeOfDayTime,
-                      _dropDownDauer, _dropDownAnfallsart, fullName);
+                      _dropDownDuration, _dropDownAttackArt, fullName);
                 },
                 icon: Icon(Icons.add, size: 18),
                 label: Text("Hinzufügen"),
@@ -292,21 +292,21 @@ class _AttackwidgetState extends State<Attackwidget> {
       List<StatusIcons> statusList,
       DateTime dateTimeDay,
       TimeOfDay timeOfDayTime,
-      String dauer,
-      String anfallsart,
-      String notizen) {
+      String duration,
+      String attackArt,
+      String notice) {
        final User user = FirebaseAuth.instance.currentUser;
       final uid= user.uid;
-    StatusIcons symptome =
-        statusList.firstWhere((element) => element.id == "symptome");
+    StatusIcons symptom =
+        statusList.firstWhere((element) => element.id == "symptom");
     Attack attack = new Attack(
         userid: uid,
-        datum: dateTimeDay,
-        uhrzeit: timeOfDayTime,
-        dauer: dauer,
-        anfallsart: anfallsart,
-        symptome: symptome,
-        notizen: notizen);
+        date: dateTimeDay,
+        time: timeOfDayTime,
+        duration: duration,
+        attackArt: attackArt,
+        symptom: symptom,
+        notice: notice);
     print(attack.toJson());
     attackSetup(attack);
   }

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epilepsia/Home/home.dart';
 import 'package:epilepsia/model/daily/sport.dart';
-import 'package:epilepsia/model/healthy/stimmung.dart';
+import 'package:epilepsia/model/healthy/mood.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,15 +24,15 @@ class _DailyState extends State<Daily> {
   TextEditingController nameController = TextEditingController();
   String fullName = '';
   TimeOfDay timeOfDayTime;
-  List<String> sportdauer = <String>[
+  List<String> sportDuration = <String>[
     "10 Minuten",
     "20 Minuten",
     "30 Minuten",
     "45 Minuten",
     "60 Minuten",
-    "90 Minuten"
+    "90 Minuten",
   ];
-  String _dropDownSportdauer;
+  String _dropDownSportDuration;
   DateTime dateTimeDay;
   String daySelect = "";
   @override
@@ -40,14 +40,26 @@ class _DailyState extends State<Daily> {
     String format = 'dd.MM.yyyy';
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(        
+        backgroundColor: Colors.amberAccent[700],
         actions: [
-          IconButton(
+          Row(children: [
+            Text(
+                "Speichern",
+                
+                style: TextStyle(color: Colors.black, fontSize: 10),
+                
+              ),
+            IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              saveSport(statusList, timeOfDayTime, _dropDownSportdauer, dateTimeDay);
+              saveSport(statusList, timeOfDayTime, _dropDownSportDuration, dateTimeDay);
             },
-          )
+          ),
+          
+
+          ],)
+          
         ],
       ),
       body: SingleChildScrollView(
@@ -115,15 +127,15 @@ class _DailyState extends State<Daily> {
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
               child: DropdownButton(
-                hint: _dropDownSportdauer == null
+                hint: _dropDownSportDuration == null
                     ? Text('Sportdauer')
                     : Text(
-                        _dropDownSportdauer,
+                        _dropDownSportDuration,
                         style: TextStyle(color: Colors.blue),
                       ),
                 iconSize: 30.0,
                 style: TextStyle(color: Colors.blue),
-                items: sportdauer.map(
+                items: sportDuration.map(
                   (val) {
                     return DropdownMenuItem<String>(
                       value: val,
@@ -134,7 +146,7 @@ class _DailyState extends State<Daily> {
                 onChanged: (val) {
                   setState(
                     () {
-                      _dropDownSportdauer = val;
+                      _dropDownSportDuration = val;
                     },
                   );
                 },
@@ -198,22 +210,21 @@ class _DailyState extends State<Daily> {
 void saveSport(
   List<StatusIcons> statusList,
   TimeOfDay timeOfDayTime,
-  String sportdauer,
+  String durationSport,
   DateTime dateTimeDay,
 ) {
    final User user = FirebaseAuth.instance.currentUser;
       final uid= user.uid;
-  StatusIcons sportart =
+  StatusIcons sportIcon =
       statusList.firstWhere((element) => element.id == "sportart");
-  Sport sporti = new Sport(
+  Sport sport = new Sport(
     userid: uid,
-    uhrzeit: timeOfDayTime,
-    sportdauer: sportdauer,
-    sportart: sportart,
-    datum: dateTimeDay,
+    time: timeOfDayTime,
+    durationSport: durationSport,
+    sportIcon: sportIcon,
+    date: dateTimeDay,
   );
-  print(sporti.toJson());
-  sportSetup(sporti);
+  sportSetup(sport);
 }
 
 Future<void> sportSetup(Sport sport) async {
