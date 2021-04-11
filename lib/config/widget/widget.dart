@@ -104,8 +104,8 @@ class _StatusWidgetState extends State<StatusWidget> {
               visible: _isEnable,
               child: Container(
                 margin: EdgeInsets.only(top: 5, bottom: 1, left: 5, right: 5),
-                child: Text("Bitte Spiel spielen!!!",style: TextStyle(
-    color: Colors.red[300],fontSize: 13)),
+                child: Text("Bitte ein Spiel spielen!",style: TextStyle(
+    color: Colors.red[300],fontSize: 11)),
               ),
             ),
             Container(

@@ -33,8 +33,8 @@ class _SportWidgetState extends State<SportWidget> {
     border = Border.all(
       color: Colors.white,
       width: 0,
+      style: BorderStyle.solid,
     );
-    // borderRadius: BorderRadius.all(Radius.circular(20));
     print(text);
     super.initState();
   }
@@ -54,7 +54,10 @@ class _SportWidgetState extends State<SportWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: Icon(IconData(iconData, fontFamily: 'MaterialIcons'),color: Colors.black,),
+                icon: Icon(
+                  IconData(iconData, fontFamily: 'MaterialIcons'),
+                  color: Colors.black,
+                ),
               ),
               Text(
                 text,

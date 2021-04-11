@@ -39,7 +39,7 @@ class Medication {
     return Medication(
       userid: data['id'],
       name: data['name'],
-      dose: data['dose'],
+      dose: data['dosis'],
       icon: StatusIcons.fromJson(data['icon']),
       color: StatusIcons.fromJson(data['color']),
       repeat: data['repeat'],

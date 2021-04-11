@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Attack {
   String userid;
-  DateTime date;
+  DateTime datum;
   TimeOfDay time;
   String duration;
   String attackArt;
@@ -12,7 +12,7 @@ class Attack {
 
   Attack(
       {this.userid,
-      this.date,
+      this.datum,
       this.time,
       this.duration,
       this.symptom,
@@ -20,12 +20,12 @@ class Attack {
       this.notice});
 
   factory Attack.fromJson(Map<String, dynamic> data) {
-    DateTime _datumfirebase = data['date'].toDate();
-      var date = data['date'].toDate();
+    DateTime _datumfirebase = data['datum'].toDate();
+    var datum = data['datum'].toDate();
     var uhrZeit = data["uhrZeit"];
     return Attack(
       userid: data['id'],
-      date: date,
+      datum: datum,
       duration: data['duration'],
       attackArt: data['attackArt'],
       symptom: StatusIcons.fromJson(data['symptom']),
@@ -37,7 +37,7 @@ class Attack {
     Map _symptom = this.symptom != null ? this.symptom.toJson() : null;
     return {
       'id': userid,
-      'datum': date,
+      'datum': datum,
       'uhrZeit': time.toString(),
       'duration': duration,
       'attackArt': attackArt,

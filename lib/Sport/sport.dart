@@ -24,6 +24,7 @@ class _DailyState extends State<Daily> {
   TextEditingController nameController = TextEditingController();
   String fullName = '';
   TimeOfDay timeOfDayTime;
+  //Erstellung einer Liste von der Sportdauer
   List<String> sportDuration = <String>[
     "10 Minuten",
     "20 Minuten",
@@ -40,32 +41,33 @@ class _DailyState extends State<Daily> {
     String format = 'dd.MM.yyyy';
 
     return Scaffold(
-      appBar: AppBar(        
+      //obere Leiste - Zurück-Button oder Hinzufügen-Button
+      appBar: AppBar(
         backgroundColor: Colors.amberAccent[700],
         actions: [
-          Row(children: [
-            Text(
-                "Speichern",
-                
+          Row(
+            children: [
+              Text(
+                "Hinzufügen: ",
                 style: TextStyle(color: Colors.black, fontSize: 10),
-                
               ),
-            IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              saveSport(statusList, timeOfDayTime, _dropDownSportDuration, dateTimeDay);
-            },
-          ),
-          
-
-          ],)
-          
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  saveSport(statusList, timeOfDayTime, _dropDownSportDuration,
+                      dateTimeDay);
+                },
+              ),
+            ],
+          )
         ],
       ),
+      //Initalisierung der Scrollmöglichkeit
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.only(top: 30.0),
           child: Column(children: [
+            //Kalenderanzeige und Auswahl eines Tages
             Container(
               margin: const EdgeInsets.all(15.0),
               child: TextFormField(
@@ -90,6 +92,7 @@ class _DailyState extends State<Daily> {
                 },
               ),
             ),
+            //Anzeige einer Uhr und Auswahl einer Uhrzeit
             Container(
               margin: const EdgeInsets.all(15),
               child: TextField(
@@ -112,9 +115,11 @@ class _DailyState extends State<Daily> {
                 },
               ),
             ),
+            //Abstand
             Divider(
               height: 15,
             ),
+            //Textfeld
             Align(
               alignment: Alignment.bottomCenter,
               child: Text(
@@ -124,6 +129,7 @@ class _DailyState extends State<Daily> {
                 ),
               ),
             ),
+            //Dropdown für die Sportdauer
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
               child: DropdownButton(
@@ -152,12 +158,13 @@ class _DailyState extends State<Daily> {
                 },
               ),
             ),
+            //Aufruf der erstellen Sportwidget
             Row(
               children: [
                 SportWidget(widget.key, 'sportart', 'Joggen', 59070,
-                    Colors.grey[300],statusList),
-                SportWidget(widget.key, 'sportart', 'Gehen', 59073, Colors.grey[300],
-                    statusList),
+                    Colors.grey[300], statusList),
+                SportWidget(widget.key, 'sportart', 'Gehen', 59073,
+                    Colors.grey[300], statusList),
               ],
             ),
             Row(
@@ -181,7 +188,7 @@ class _DailyState extends State<Daily> {
                 SportWidget(widget.key, 'sportart', 'Fußball', 59931,
                     Colors.grey[300], statusList),
                 SportWidget(widget.key, 'sportart', 'Gymnastik', 58769,
-                   Colors.grey[300], statusList),
+                    Colors.grey[300], statusList),
               ],
             ),
             Row(
@@ -206,15 +213,15 @@ class _DailyState extends State<Daily> {
     );
   }
 }
-
+//
 void saveSport(
   List<StatusIcons> statusList,
   TimeOfDay timeOfDayTime,
   String durationSport,
   DateTime dateTimeDay,
 ) {
-   final User user = FirebaseAuth.instance.currentUser;
-      final uid= user.uid;
+  final User user = FirebaseAuth.instance.currentUser;
+  final uid = user.uid;
   StatusIcons sportIcon =
       statusList.firstWhere((element) => element.id == "sportart");
   Sport sport = new Sport(
@@ -222,7 +229,7 @@ void saveSport(
     time: timeOfDayTime,
     durationSport: durationSport,
     sportIcon: sportIcon,
-    date: dateTimeDay,
+    datum: dateTimeDay,
   );
   sportSetup(sport);
 }

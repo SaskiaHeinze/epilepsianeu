@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Status {
   String userid;
-  DateTime date;
+  DateTime datum;
   TimeOfDay uhrzeit;
   StatusIcons mood;
   StatusIcons symptom;
@@ -11,7 +11,7 @@ class Status {
 
   Status(
       {this.userid,
-      this.date,
+      this.datum,
       this.uhrzeit,
       this.mood,
       this.symptom,
@@ -19,11 +19,11 @@ class Status {
 
   factory Status.fromJson(Map<String, dynamic> data) {
     DateTime _datumfirebase = data['datum'].toDate();
-    var date = data['datum'].toDate();
+    var datum = data['datum'].toDate();
     var uhrZeit = data["uhrZeit"];
     return Status(
       userid: data['id'],
-      date: date,
+      datum: datum,
       mood: StatusIcons.fromJson(data['mood']),
       symptom: StatusIcons.fromJson(data['symptom']),
       stress: StatusIcons.fromJson(data['stress']),
@@ -36,7 +36,7 @@ class Status {
     Map _stress = this.stress != null ? this.stress.toJson() : null;
     return {
       'id': userid,
-      'date': date,
+      'datum': datum,
       'uhrZeit': uhrzeit.toString(),
       'mood': _mood,
       'symptom': _symptom,

@@ -178,10 +178,7 @@ class _StateOfHealthState extends State<StateOfHealth> {
                       ),
                     ],
                   ),
-                  Divider(
-                    height: 20,
-                    thickness: 3,
-                  ),
+                 
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -231,10 +228,10 @@ class _StateOfHealthState extends State<StateOfHealth> {
                       ),
                     ],
                   ),
-                  Divider(
-                    height: 50,
-                    thickness: 3,
-                  ),
+                  // Divider(
+                  //   height: 50,
+                  //   thickness: 3,
+                  // ),
                 
                   Visibility(
                     visible: true,
@@ -270,7 +267,7 @@ class _StateOfHealthState extends State<StateOfHealth> {
         statusList.firstWhere((element) => element.id == "stress");
     Status status = new Status(
         userid: uid,
-        date: dateTimeDay,
+        datum: dateTimeDay,
         uhrzeit: timeOfDayTime,
         mood: mood,
         symptom: symptom,

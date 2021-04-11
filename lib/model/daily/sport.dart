@@ -6,19 +6,19 @@ class Sport {
   TimeOfDay time;
   String durationSport;
   StatusIcons sportIcon;
-  DateTime date;
+  DateTime datum;
 
-  Sport({this.userid, this.time, this.durationSport,this.sportIcon,this.date,});
+  Sport({this.userid, this.time, this.durationSport,this.sportIcon,this.datum,});
 
   factory Sport.fromJson(Map<String, dynamic> data) {
     DateTime _datumfirebase = data['datum'].toDate();
-    var date = data['date'].toDate();
+    var datum = data['datum'].toDate();
     var uhrZeit = data["uhrZeit"];
     return Sport(
       userid: data['id'],
       durationSport: data['sportDuration'],
       sportIcon: StatusIcons.fromJson(data['SportIcon']),
-      date: date,
+      datum: datum,
     );
   }
 
@@ -29,7 +29,7 @@ class Sport {
       'uhrZeit': time.toString(),
       'sportDuration' : durationSport,
       'SportIcon': _sport,
-       'datum': date,
+       'datum': datum,
     };
   }
 }

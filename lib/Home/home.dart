@@ -119,7 +119,7 @@ class _HomeState extends State<Home> {
                   StatusWidget(
                     widget.key,
                     'color',
-                    'Freunde',
+                    'Privat',
                     57594,
                     Colors.teal[300],
                     statusList,
@@ -127,7 +127,7 @@ class _HomeState extends State<Home> {
                   StatusWidget(
                     widget.key,
                     'color',
-                    'Beruf',
+                    'Arbeit',
                     57594,
                     Colors.amberAccent[700],
                     statusList,
@@ -135,7 +135,7 @@ class _HomeState extends State<Home> {
                   StatusWidget(
                     widget.key,
                     'color',
-                    'Sonstig',
+                    'Familie',
                     57594,
                     Colors.teal[700],
                     statusList,
@@ -208,6 +208,11 @@ class _HomeState extends State<Home> {
                         alignment: Alignment.center,
                         child: Text(
                           '"Wer den Tag mit einem Lächeln beginnt, hat ihn bereits gewonnen."',
+                          style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                        ),
                         ),
                       ),
                     ],

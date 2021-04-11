@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Container(
-              //Show Error Messages
+              //Fehlermeldung
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: Text(
@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Container(
               //Login Buttom
-              //Starting the Login process
+              //Login-Prozess starten
               margin: EdgeInsets.all(20),
               width: double.infinity,
               decoration: BoxDecoration(

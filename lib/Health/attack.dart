@@ -30,6 +30,7 @@ class _AttackwidgetState extends State<Attackwidget> {
     "60 Minuten",
     "90 Minuten"
   ];
+  
   List<String> attackArt = <String>[
     "Vorgefühl",
     "Aura",
@@ -301,7 +302,7 @@ class _AttackwidgetState extends State<Attackwidget> {
         statusList.firstWhere((element) => element.id == "symptom");
     Attack attack = new Attack(
         userid: uid,
-        date: dateTimeDay,
+        datum: dateTimeDay,
         time: timeOfDayTime,
         duration: duration,
         attackArt: attackArt,

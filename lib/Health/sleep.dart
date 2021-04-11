@@ -225,7 +225,7 @@ class _SleepState extends State<SleepWidget> {
         statusList.firstWhere((element) => element.id == "sleep");
     Sleep sleepclass = new Sleep(
         userid: uid,
-        date: dateTimeDay,
+        datum: dateTimeDay,
         durationSleep: durationSleep,
         sleepicon: sleep);
     print(sleepclass);
