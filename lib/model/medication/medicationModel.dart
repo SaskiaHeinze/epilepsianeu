@@ -1,4 +1,5 @@
-import 'package:epilepsia/model/healthy/mood.dart';
+import 'package:epilepsia/model/healthy/IconModel.dart';
+import 'package:flutter/material.dart';
 
 class Medication {
   String userid;
@@ -7,6 +8,7 @@ class Medication {
   StatusIcons icon;
   StatusIcons color;
   String repeat;
+  String time; 
   DateTime begin;
   DateTime end;
 
@@ -17,6 +19,7 @@ class Medication {
     this.icon,
     this.color,
     this.repeat,
+    this.time,
     this.end,
     this.begin,
   });
@@ -35,8 +38,8 @@ class Medication {
     } else {
       begin = DateTime.parse(data['begin']);
     }
-
     return Medication(
+      
       userid: data['id'],
       name: data['name'],
       dose: data['dosis'],
@@ -70,6 +73,7 @@ class Medication {
       'icon': _icon,
       'color': _color,
       'repeat': repeat,
+      'uhrZeit': time,
       'begin': _begin,
       'end': _end,
     };

@@ -1,4 +1,4 @@
-import 'package:epilepsia/model/healthy/mood.dart';
+import 'package:epilepsia/model/healthy/IconModel.dart';
 import 'package:flutter/material.dart';
 
 class SportWidget extends StatefulWidget {
@@ -24,6 +24,7 @@ class _SportWidgetState extends State<SportWidget> {
   Border border;
   bool change = false;
 
+  //Objekte werden in die Struktur eingefügt
   @override
   void initState() {
     text = widget.text;
@@ -35,7 +36,7 @@ class _SportWidgetState extends State<SportWidget> {
       width: 0,
       style: BorderStyle.solid,
     );
-    print(text);
+    
     super.initState();
   }
 
@@ -53,12 +54,11 @@ class _SportWidgetState extends State<SportWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(
-                icon: Icon(
+              //Symbol für die Sportaktivität
+                Icon(
                   IconData(iconData, fontFamily: 'MaterialIcons'),
                   color: Colors.black,
                 ),
-              ),
               Text(
                 text,
                 textAlign: TextAlign.center,
@@ -66,15 +66,17 @@ class _SportWidgetState extends State<SportWidget> {
               ),
             ],
           ),
+          //Auswählen des Button
           onPressed: () {
             setState(() {
               StatusIcons statusIcon = new StatusIcons(
                   id: id, color: color, name: text, iconData: iconData);
+              // Ausgewählte Sportaktivität wird gesucht und Werte eingetragen    
               if ((widget.statusList.singleWhere(
                       (element) => element.id == statusIcon.id,
                       orElse: () => null)) !=
                   null) {
-                print("Exist");
+                
                 if ((widget.statusList.singleWhere(
                         (element) => element.name == statusIcon.name,
                         orElse: () => null)) !=
@@ -84,16 +86,19 @@ class _SportWidgetState extends State<SportWidget> {
                     color: Colors.white,
                     width: 0,
                   );
+                  //Bei erneutem Klick auf die Sportaktivität wird die Auswahl aufgehoben
                   widget.statusList.removeWhere(
                       (element) => element.name == statusIcon.name);
                 }
-              } else {
-                print("not Exist");
+              } 
+              //Text-Button bekommt beim Auswählen eine schwarze Umrandung
+              else {
                 change = true;
                 border = Border.all(
                   color: Colors.black,
                   width: 2,
                 );
+                //Die ausgewählte Sportaktivität wird im Widget in der statusList hinterlegt
                 widget.statusList.add(statusIcon);
               }
             });

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:epilepsia/model/daily/sport.dart';
-import 'package:epilepsia/model/healthy/attack.dart';
-import 'package:epilepsia/model/healthy/sleep.dart';
-import 'package:epilepsia/model/healthy/status.dart';
-import 'package:epilepsia/model/healthy/mood.dart';
+import 'package:epilepsia/model/daily/sportModel.dart';
+import 'package:epilepsia/model/healthy/attackModel.dart';
+import 'package:epilepsia/model/healthy/sleepModel.dart';
+import 'package:epilepsia/model/healthy/StateOfHealthModel.dart';
+import 'package:epilepsia/model/healthy/IconModel.dart';
 import 'package:epilepsia/config/widget/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class _DiaryState extends State<Diary> {
   final dateController = TextEditingController();
   List<StatusIcons> statusList = <StatusIcons>[];
 
-  List<Status> statusDataList = <Status>[];
+  List<StateOfHealthModel> statusDataList = <StateOfHealthModel>[];
   List<Attack> attackDataList = <Attack>[];
   List<Sleep> sleepDataList = <Sleep>[];
   List<Sport> sportDataList = <Sport>[];
@@ -51,9 +51,11 @@ class _DiaryState extends State<Diary> {
     var date;
 
     return Scaffold(
+        //Funktion ermöglich das Scrollen innerhalb der App
         body: SingleChildScrollView(
       child: Column(
         children: [
+          //Auswählen eines Tages
           Container(
             margin: EdgeInsets.only(top: 60, bottom: 5, left: 50, right: 50),
             child: TextField(
@@ -62,6 +64,7 @@ class _DiaryState extends State<Diary> {
               decoration: InputDecoration(
                   hoverColor: Colors.blue[200],
                   hintText: 'Auswählen eines Tages'),
+              //Beim Auswahl des Tages wird der Tag den folgenden Funktionen übergeben
               onTap: () async {
                 date = await showDatePicker(
                     context: context,
@@ -77,11 +80,11 @@ class _DiaryState extends State<Diary> {
               },
             ),
           ),
+          //Wenn keinen Daten zum ausgewählten Tag gefunden werden, wird eine entsprechende Meldung angezeigt
           Container(
-              // margin: EdgeInsets.all(5),
-              // height: 2000,
               child: Column(
             children: [
+              //wird nur angezeigt wenn es keine Daten gibt
               Visibility(
                   visible: getDataBoolStatus &&
                       statusDataList.isEmpty &&
@@ -91,7 +94,17 @@ class _DiaryState extends State<Diary> {
                       sleepDataList.isEmpty &&
                       getDataBoolSport &&
                       sportDataList.isEmpty,
-                  child: Container(child: Text("Kein Eintrag gefunden!"))),
+                  child: Column(
+                    children: [
+                      Icon(Icons.warning, size: 60),
+                      Text(
+                        "Keinen Eintrag gefunden!",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text("Bitte Daten speichern!"),
+                    ],
+                  )),
+              //Wenn Daten zum Befinden Gefunden werden Werden diese Angezeigt
               Visibility(
                 visible: getDataBoolStatus,
                 child: Container(
@@ -100,19 +113,17 @@ class _DiaryState extends State<Diary> {
                   child: ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: statusDataList.length,
+                      //Gefundene Daten zum Befinden
                       itemBuilder: (BuildContext context, int index) {
-                        Status item = statusDataList[index];
+                        StateOfHealthModel item = statusDataList[index];
                         var newFormat = DateFormat("dd.MM.yyyy");
-                        String updatedDt = newFormat.format(item.datum);
+                        String updatedDt = newFormat.format(item.dateDay);
                         return Column(children: [
                           Text("Sie haben ausgewählt: " + updatedDt),
+                          //ausgewählte Icons werden angezeigt
                           Card(
                             color: Colors.grey[300],
                             child: Row(children: [
-                              Text(
-                                "Die Stimmung war: ",
-                                textAlign: TextAlign.center,
-                              ),
                               StatusWidget(
                                 widget.key,
                                 item.mood.id,
@@ -143,6 +154,7 @@ class _DiaryState extends State<Diary> {
                       }),
                 ),
               ),
+              //Wenn Daten zu Anfall gefunden werden, werden diese angezeigt
 
               Visibility(
                 visible: getDataBoolAttack,
@@ -158,52 +170,67 @@ class _DiaryState extends State<Diary> {
                           Attack item = attackDataList[index];
                           return ListTile(
                             title: Text("Anfall von " + item.duration),
-                            subtitle: RichText(text: TextSpan(
-                              children: [
-                                TextSpan(text: "mit folgender Anfallsart: " + item.attackArt),
-                                TextSpan(text: "Symptome: " + item.symptom.name),
-                              ],
-                            style: TextStyle(color: Colors.black),),),
-                            leading:  Icon(Icons.warning, size: 40),
+                            subtitle: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                      text: "mit folgender Anfallsart: " +
+                                          item.attackArt),
+                                  TextSpan(
+                                      text: " Symptome: " + item.symptom.name),
+                                ],
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                            leading: Icon(
+                              Icons.warning,
+                              size: 40,
+                              color: Colors.black,
+                            ),
                           );
                         }),
                   ),
                 ),
               ),
+
+              //Wenn Daten zum Schlaf gefunden werden, werden diese angezeigt
               Visibility(
                 visible: getDataBoolSleep,
                 child: Container(
-                 
                   height: 130 *
                       double.parse(sleepDataList.length.toStringAsFixed(0)),
                   child: Card(
-                   
                     color: Colors.grey[300],
                     child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: sleepDataList.length,
-                          itemExtent: 50,
-                          itemBuilder: (BuildContext context, int index) {
-                            Sleep item = sleepDataList[index];
-                            return ListTile(
-                              
-                              title: Text("Schlaf-" +
-                                        item.durationSleep ),
-                              subtitle: RichText(text: TextSpan(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: sleepDataList.length,
+                        itemExtent: 50,
+                        itemBuilder: (BuildContext context, int index) {
+                          Sleep item = sleepDataList[index];
+                          return ListTile(
+                            title: Text(item.durationSleep + " h"),
+                            subtitle: RichText(
+                              text: TextSpan(
                                 children: [
-                                  TextSpan(text: "Stunden & die Schlafqualität war: "),
+                                  TextSpan(text: "Schlafqualität war: "),
                                   TextSpan(text: item.sleepicon.name),
                                 ],
-                              style: TextStyle(color: Colors.black),),),
-                              leading: Icon(IconData(item.sleepicon.iconData, fontFamily: 'MaterialIcons'),
-                color: Colors.black,size: 45,),
-                            );
-                            
-                      }),
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                            leading: Icon(
+                              IconData(item.sleepicon.iconData,
+                                  fontFamily: 'MaterialIcons'),
+                              color: Colors.black,
+                              size: 45,
+                            ),
+                          );
+                        }),
                   ),
                 ),
               ),
-               Visibility(
+              //Wenn Daten zum Sport gefunden werden, werden diese angezeigt
+              Visibility(
                 visible: getDataBoolSport,
                 child: Container(
                   height: 120 *
@@ -217,15 +244,23 @@ class _DiaryState extends State<Diary> {
                           Sport item = sportDataList[index];
                           return ListTile(
                             title: Text("Du hast heute " +
-                                  item.durationSport),
-                            subtitle: RichText(text: TextSpan(
-                              children: [
-                                TextSpan(text: "Sport gemacht: "),
-                                TextSpan(text: item.sportIcon.name),
-                              ],
-                            style: TextStyle(color: Colors.black),),),
-                            leading:Icon(IconData(item.sportIcon.iconData, fontFamily: 'MaterialIcons'),
-                color: Colors.black,size: 45,),
+                                item.durationSport +
+                                " Sport gemacht"),
+                            subtitle: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(text: "Aktivität: "),
+                                  TextSpan(text: item.sportIcon.name),
+                                ],
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                            leading: Icon(
+                              IconData(item.sportIcon.iconData,
+                                  fontFamily: 'MaterialIcons'),
+                              color: Colors.black,
+                              size: 45,
+                            ),
                           );
                         }),
                   ),
@@ -238,20 +273,20 @@ class _DiaryState extends State<Diary> {
     ));
   }
 
-  Future<List<Status>> getData(DateTime date) async {
-    List<Status> list = <Status>[];
-
+  //Auslesen der Statusdaten aus der Datenbank anhand der Sammlung und der userId
+  Future<List<StateOfHealthModel>> getData(DateTime date) async {
+    List<StateOfHealthModel> list = <StateOfHealthModel>[];
     Timestamp myTimeStamp = Timestamp.fromDate(date);
-
+    //Statusdaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
     result = await firestore
         .collection("status")
-        .where("datum", isEqualTo: date)
+        .where("dateDay", isEqualTo: date)
         .where("id", isEqualTo: user.uid)
         .get();
-
+    //gefundene Daten werden ausgegeben
     result.docs.forEach((result) {
       var data = result.data();
-      Status status = new Status.fromJson(data);
+      StateOfHealthModel status = new StateOfHealthModel.fromJson(data);
       list.add(status);
     });
 
@@ -262,17 +297,19 @@ class _DiaryState extends State<Diary> {
     return list;
   }
 
+  //Auslesen der Anfalldaten aus der Datenbank anhand der Sammlung und der userId
   Future<List<Attack>> getAttackData(DateTime date) async {
     List<Attack> list = <Attack>[];
 
     Timestamp myTimeStamp = Timestamp.fromDate(date);
-
+    //Anfalldaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
     result = await firestore
         .collection("attack")
-        .where("datum", isEqualTo: date)
+        .where("dateDay", isEqualTo: date)
         .where("id", isEqualTo: user.uid)
         .get();
 
+    //gefundene Daten werden ausgegeben
     result.docs.forEach((result) {
       var data = result.data();
       Attack attack = new Attack.fromJson(data);
@@ -287,17 +324,18 @@ class _DiaryState extends State<Diary> {
     return list;
   }
 
+  //Auslesen der Schlafdaten aus der Datenbank anhand der Sammlung und der userId
   Future<List<Sleep>> getSleepData(DateTime date) async {
     List<Sleep> list = <Sleep>[];
 
     Timestamp myTimeStamp = Timestamp.fromDate(date);
-
+    //Schlafdaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
     result = await firestore
         .collection("sleep")
-        .where("datum", isEqualTo: date)
+        .where("dateDay", isEqualTo: date)
         .where("id", isEqualTo: user.uid)
         .get();
-
+    //gefundene Daten werden ausgegeben
     result.docs.forEach((result) {
       var data = result.data();
       Sleep sleep = new Sleep.fromJson(data);
@@ -312,17 +350,18 @@ class _DiaryState extends State<Diary> {
     return list;
   }
 
+  //Auslesen der Sportdaten aus der Datenbank anhand der Sammlung und der userId
   Future<List<Sport>> getSportData(DateTime date) async {
     List<Sport> list = <Sport>[];
 
     Timestamp myTimeStamp = Timestamp.fromDate(date);
-
+    //Sportdaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
     result = await firestore
         .collection("sport")
-        .where("datum", isEqualTo: date)
+        .where("dateDay", isEqualTo: date)
         .where("id", isEqualTo: user.uid)
         .get();
-
+    //gefundene Daten werden ausgegeben
     result.docs.forEach((result) {
       var data = result.data();
       Sport sport = new Sport.fromJson(data);

@@ -1,29 +1,27 @@
-import 'package:epilepsia/model/healthy/mood.dart';
+import 'package:epilepsia/model/healthy/IconModel.dart';
 import 'package:flutter/material.dart';
 
-class Status {
+class StateOfHealthModel {
   String userid;
-  DateTime datum;
+  DateTime dateDay;
   TimeOfDay uhrzeit;
   StatusIcons mood;
   StatusIcons symptom;
   StatusIcons stress;
 
-  Status(
+  StateOfHealthModel(
       {this.userid,
-      this.datum,
+      this.dateDay,
       this.uhrzeit,
       this.mood,
       this.symptom,
       this.stress});
 
-  factory Status.fromJson(Map<String, dynamic> data) {
-    DateTime _datumfirebase = data['datum'].toDate();
-    var datum = data['datum'].toDate();
-    var uhrZeit = data["uhrZeit"];
-    return Status(
+  factory StateOfHealthModel.fromJson(Map<String, dynamic> data) {
+    var dateDay = data['dateDay'].toDate();
+    return StateOfHealthModel(
       userid: data['id'],
-      datum: datum,
+      dateDay: dateDay,
       mood: StatusIcons.fromJson(data['mood']),
       symptom: StatusIcons.fromJson(data['symptom']),
       stress: StatusIcons.fromJson(data['stress']),
@@ -36,7 +34,7 @@ class Status {
     Map _stress = this.stress != null ? this.stress.toJson() : null;
     return {
       'id': userid,
-      'datum': datum,
+      'dateDay': dateDay,
       'uhrZeit': uhrzeit.toString(),
       'mood': _mood,
       'symptom': _symptom,

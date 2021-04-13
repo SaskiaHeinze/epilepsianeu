@@ -1,7 +1,6 @@
+import 'package:epilepsia/model/meetingModel.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-import 'meeting.dart';
 
 class MeetingDataSource extends CalendarDataSource {
   MeetingDataSource(List<Meeting> source){

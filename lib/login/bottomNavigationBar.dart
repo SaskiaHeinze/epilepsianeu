@@ -6,11 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
-class LoginView extends StatefulWidget {
+class BottomNavigation extends StatefulWidget {
   @override
-  _LoginViewState createState() => _LoginViewState();
+  _BottomNavigationState createState() => _BottomNavigationState();
 }
-class _LoginViewState extends State<LoginView> {
+class _BottomNavigationState extends State<BottomNavigation> {
    int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -20,12 +20,14 @@ class _LoginViewState extends State<LoginView> {
     Diary(),
     Settings(),
   ];
-
+//Bei Klick auf eine Option wird diese in der Liste gefunden und auf die jeweilige Seite weitergeleitet
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
+  //Aufbau der unteren Leiste (BottomNavigationBar)
   @override
   Widget build(BuildContext context) {
         return Scaffold(

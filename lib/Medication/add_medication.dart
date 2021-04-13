@@ -1,13 +1,15 @@
+import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:epilepsia/model/healthy/mood.dart';
+import 'package:epilepsia/login/bottomNavigationBar.dart';
+import 'package:epilepsia/model/healthy/IconModel.dart';
 import 'package:epilepsia/config/widget/widget.dart';
-import 'package:epilepsia/model/medication/medication.dart';
+import 'package:epilepsia/model/medication/medicationModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
-import 'package:epilepsia/model/pushnotification.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 //FirebaseMessaging _messaging = FirebaseMessage();
@@ -39,7 +41,6 @@ class _AddMedicationState extends State<AddMedication> {
   bool isSwitched = false;
 
   TimeOfDay timeOfDayTime;
-  List<String> timeOfDayTimeList = [];
 
   String fullName = '';
   String fullNameDose = '';
@@ -52,14 +53,14 @@ class _AddMedicationState extends State<AddMedication> {
     DateFormat format = DateFormat('dd.MM.yyyy');
     return Container(
       margin: const EdgeInsets.all(15.0),
+      //Funktion ermöglich das Scrollen innerhalb der App
       child: SingleChildScrollView(
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
                 alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(top: 5, left: 10),
               ),
+              //Name des neuen Medikaments
               TextField(
                   controller: nameControllername,
                   decoration: InputDecoration(
@@ -72,6 +73,7 @@ class _AddMedicationState extends State<AddMedication> {
                       fullName = text;
                     });
                   }),
+                  //Textfeld zum Ausfüllen der Medikamentendosis
               TextField(
                   controller: nameControllerdose,
                   decoration: InputDecoration(
@@ -84,6 +86,8 @@ class _AddMedicationState extends State<AddMedication> {
                       fullNameDose = text;
                     });
                   }),
+                  Divider(height: 10,),
+                  //
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
@@ -93,6 +97,7 @@ class _AddMedicationState extends State<AddMedication> {
                   ),
                 ),
               ),
+              //Darstellung der auswählbaren Icons von der Klasse StatusWidget --> siehe config/widget/widget.dart
               Row(
                 children: [
                   StatusWidget(
@@ -137,6 +142,7 @@ class _AddMedicationState extends State<AddMedication> {
                   ),
                 ],
               ),
+              //Darstellung der auswählbaren Farben von der Klasse StatusWidget --> siehe config/widget/widget.dart
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
@@ -182,20 +188,69 @@ class _AddMedicationState extends State<AddMedication> {
                   ),
                 ],
               ),
+              Divider(
+                thickness: 3,
+              ),
+              //Switch zum Aktivieren der Erinnerungsfunktion
+              Row(
+               
+                children: [
+                  Text("Erinnerungsfunktion:",
+                  style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),),
+                  Switch(
+                    value: isSwitched,
+                    onChanged: (value) {
+                      setState(() {
+                        //Bei Aktivierung wird isSwitched true
+                        isSwitched = value;
+                        itemCount = 1;
+                      });
+                    },
+                    activeColor: Colors.red[300],
+                  ),
+                  isSwitched ? Text("Aktiv") : Text("Deaktiviert"),
+                ],
+              ),  
+                 //Uhrzeit auswählen
               Container(
-                margin: const EdgeInsets.only(left: 15.0),
+                margin: const EdgeInsets.only(left: 15,),
+                height: 50,
+                child: ListView.builder(
+                    itemCount: itemCount,
+                    itemBuilder: (BuildContext context, int index) {
+                      return TextField(
+                        readOnly: true,
+                        controller: timeController,
+                        decoration: InputDecoration(
+                            hoverColor: Colors.blue[200],
+                            hintText: 'Uhrzeit auswählen'),
+                      //Variablen mit ausgewählter Zeit befüllen
+                        onTap: () async {
+                          var time = await showTimePicker(
+                            initialTime: TimeOfDay.now(),
+                            context: context,
+                          );
+                          timeController.text = time.format(context);
+                          setState(() {
+                      timeOfDayTime = time;
+                    });
+                        },
+                      );
+                    }),
+              ),
+              //Dropdownmenü für die Auswahl der Wiederholungen
+              Container(
+                margin: const EdgeInsets.only(left: 15,),
                 child: Row(children: [
                   Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
                       'Wiederholungen: ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      
                     ),
-                  ),
-                  VerticalDivider(
-                    width: 20,
                   ),
                   Container(
                     margin:
@@ -205,10 +260,10 @@ class _AddMedicationState extends State<AddMedication> {
                           ? Text('')
                           : Text(
                               _dropDownrepeat,
-                              style: TextStyle(color: Colors.blue),
+                              style: TextStyle(color: Colors.black),
                             ),
                       iconSize: 30.0,
-                      style: TextStyle(color: Colors.blue),
+                      style: TextStyle(color: Colors.black),
                       items: repeat.map(
                         (val) {
                           return DropdownMenuItem<String>(
@@ -216,6 +271,7 @@ class _AddMedicationState extends State<AddMedication> {
                             child: Text(val),
                           );
                         },
+                      //Bei Auswahl eines Wertes aus dem Dropdownmenü wird die Variable mit diesem Wert befüllt
                       ).toList(),
                       onChanged: (val) {
                         setState(
@@ -228,56 +284,10 @@ class _AddMedicationState extends State<AddMedication> {
                   ),
                 ]),
               ),
-              Row(
-                children: [
-                  Text("Erinnerungsfunktion:"),
-                  Switch(
-                    value: isSwitched,
-                    onChanged: (value) {
-                      setState(() {
-                        isSwitched = value;
-                      });
-                    },
-                    activeColor: Colors.green,
-                  ),
-                  isSwitched ? Text("Aktiv") : Text("Deaktiviert"),
-                ],
-              ),
-              Row(children: [
-                Text("Anzahl der Pilleneinnahmen - Uhrzeit auswählen --> "),
-                IconButton(
-                  icon: Icon(Icons.add_alarm),
-                  onPressed: () {
-                    setState(() {
-                      itemCount = 1;
-                    });
-                  },
-                ),
-              ]),
-              Container(
-                height: 60,
-                child: ListView.builder(
-                    itemCount: itemCount,
-                    itemBuilder: (BuildContext context, int index) {
-                      return TextField(
-                        readOnly: true,
-                        controller: timeController,
-                        decoration: InputDecoration(
-                            hoverColor: Colors.blue[200],
-                            hintText: 'Uhrzeit auswählen'),
-                        onTap: () async {
-                          var time = await showTimePicker(
-                            initialTime: TimeOfDay.now(),
-                            context: context,
-                          );
-                          timeController.text = time.format(context);
-                        },
-                      );
-                    }),
-              ),
               Divider(
                 height: 15,
               ),
+              //Auswahl des Datums der ersten Einnahme des Medikaments
               Container(
                 margin: const EdgeInsets.only(left: 15.0),
                 child: TextField(
@@ -286,6 +296,7 @@ class _AddMedicationState extends State<AddMedication> {
                   decoration: InputDecoration(
                       hoverColor: Colors.blue[200],
                       hintText: 'Startdatum der Einnahme'),
+                      //Variablen mit ausgewähltem Dauer befüllen
                   onTap: () async {
                     var date1 = await showDatePicker(
                         context: context,
@@ -301,6 +312,7 @@ class _AddMedicationState extends State<AddMedication> {
                   },
                 ),
               ),
+              //Auswahl des Datums bis zur letzten Einnahme
               Container(
                 margin: const EdgeInsets.all(15.0),
                 child: TextField(
@@ -317,25 +329,16 @@ class _AddMedicationState extends State<AddMedication> {
                         lastDate: DateTime(2100));
                     dateController.value =
                         TextEditingValue(text: format.format(date));
-
+                    
+                   
                     setState(() {
                       dateTimeDay = date;
                     });
+                     
                   },
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(right: 15.0),
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    '*Kann auch leer gelassen werden',
-                    style: TextStyle(
-                      fontSize: 10,
-                    ),
-                  ),
-                ),
-              ),
+              //Textfeld zum Hinzufügen von einem Erinnerungstext
               Container(
                 margin: const EdgeInsets.all(15.0),
                 child: TextField(
@@ -345,16 +348,28 @@ class _AddMedicationState extends State<AddMedication> {
                       border: OutlineInputBorder(),
                       labelText: 'Erinnerungstext',
                     ),
+                    //Werte setzen
                     onChanged: (text) {
                       setState(() {
                         fullNameReminder = text;
                       });
                     }),
               ),
+              //Bei Hinzufügen-Button wird die Funktion saveMedication ausgeführt 
               ElevatedButton.icon(
                 onPressed: () {
+                  //ausgewählte Felder werden übergeben
                   saveMedication(fullName, fullNameDose, statusList,
-                      _dropDownrepeat, dateTimeDay1, dateTimeDay);
+                      _dropDownrepeat, timeOfDayTime, dateTimeDay1, dateTimeDay);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              BottomNavigation()));
+                      //Wenn die Erinnerungsfunktion aktiviert wurde wird die Funktion postNotification() ausgelöst und die Felder übergeben
+                      if (isSwitched){
+                              postNotification(fullName, dateTimeDay1, dateTimeDay, timeOfDayTime,_dropDownrepeat);
+                          }
                 },
                 icon: Icon(Icons.add, size: 18),
                 label: Text("Hinzufügen"),
@@ -369,15 +384,17 @@ class _AddMedicationState extends State<AddMedication> {
     );
   }
 }
-
+//Funktion Speichert alle ausgewählten relevanten Felder als Medikation-Objekt --> model/healthy/medicationModel
 void saveMedication(
-   // String userid,
     String name,
     String dose,
     List<StatusIcons> statusList,
     String repeat,
+    TimeOfDay timeOfDayTime,
     DateTime begin,
-    DateTime end) {
+    DateTime end,
+    ) {
+//User-ID wird von Firebase geholt
   final User user = FirebaseAuth.instance.currentUser;
   final uid = user.uid;
   StatusIcons icon = statusList.firstWhere((element) => element.id == "pill");
@@ -389,26 +406,56 @@ void saveMedication(
     icon: icon,
     color: color,
     repeat: repeat,
+    time: timeOfDayTime.toString(),
     begin: begin,
     end: end,
   );
   print(medication.toJson());
+  //Medikation-Objekt wird der Funktion medicationSetup() übergeben
   medicationSetup(medication);
-}
-
-void pushNotification(){
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  PushNotification _notificationInfo;
-  
-      //PushNotification notification = PushNotification.fromJson(data);
-
-     
-    
   
 }
 
+//Das Medikation-Objekt wird in Firestore in einer Sammlung namens medication gespeichert
 Future<void> medicationSetup(Medication medication) async {
   CollectionReference medicationref =
       FirebaseFirestore.instance.collection('medication');
   medicationref.add(medication.toJson());
 }
+//Funktion erstellt eine Notification mithilfe von OneSignal
+Future<void> postNotification(String medication, DateTime begin,DateTime end, TimeOfDay time, String repeat) async {
+  int i =0;
+  var status = await OneSignal.shared.getPermissionSubscriptionState();
+  //User-ID wird von One Signal geholt
+var playerId = status.subscriptionStatus.userId;
+var dateTimebegin = DateTime(begin.year, begin.month, begin.day, time.hour-2, time.minute);
+final dateTimeend= DateTime(end.year, end.month, end.day, end.hour, end.minute);
+print(dateTimebegin);
+//Bei Auswahl der täglichen Wiederholungen wird die Notification ab dem Startdatum bis zum Enddatum jeden Tag erstellt. Nur 30 Tage im Voraus
+if(repeat=='Täglich'){
+  while(dateTimebegin.isBefore(dateTimeend) && i<30){
+  await OneSignal.shared.postNotification(OSCreateNotification(
+  playerIds: [playerId],
+  content: 'Bitte nehmen Sie Ihre Medikamente ein',
+  heading: medication,
+  sendAfter: dateTimebegin,
+  buttons: [
+    OSActionButton(text: "Alles klar!", id: "id1"),
+  ]
+));
+dateTimebegin = DateTime(dateTimebegin.year, dateTimebegin.month, dateTimebegin.day+1, dateTimebegin.hour, dateTimebegin.minute);}
+}
+//Bei Auswahl der täglichen Wiederholungen wird die Notification ab dem Startdatum bis zum Enddatum alle 7 Tage erstellt. Nur 28 Tage im Voraus
+else{
+  while(dateTimebegin.isBefore(dateTimeend) && i<4){
+  await OneSignal.shared.postNotification(OSCreateNotification(
+  playerIds: [playerId],
+  content: 'Bitte nehmen Sie Ihre Medikamente ein',
+  heading: medication,
+  sendAfter: dateTimebegin,
+  buttons: [
+    OSActionButton(text: "Alles klar!", id: "id1"),
+  ]
+));
+dateTimebegin = DateTime(dateTimebegin.year, dateTimebegin.month, dateTimebegin.day+7, dateTimebegin.hour, dateTimebegin.minute);}
+}}

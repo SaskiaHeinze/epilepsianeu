@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epilepsia/Home/home.dart';
-import 'package:epilepsia/model/daily/sport.dart';
-import 'package:epilepsia/model/healthy/mood.dart';
+import 'package:epilepsia/login/bottomNavigationBar.dart';
+import 'package:epilepsia/model/daily/sportModel.dart';
+import 'package:epilepsia/model/healthy/IconModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../config/widget/widgetsport.dart';
 
-FirebaseFirestore firestore = FirebaseFirestore.instance;
+
 
 class Daily extends StatefulWidget {
   Daily({
@@ -56,18 +57,23 @@ class _DailyState extends State<Daily> {
                 onPressed: () {
                   saveSport(statusList, timeOfDayTime, _dropDownSportDuration,
                       dateTimeDay);
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              BottomNavigation()));
                 },
               ),
             ],
           )
         ],
       ),
-      //Initalisierung der Scrollmöglichkeit
+      //Funktion ermöglich das Scrollen innerhalb der App
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.only(top: 30.0),
           child: Column(children: [
-            //Kalenderanzeige und Auswahl eines Tages
+            //Auswahl eines Tages
             Container(
               margin: const EdgeInsets.all(15.0),
               child: TextFormField(
@@ -82,6 +88,7 @@ class _DailyState extends State<Daily> {
                     firstDate: DateTime(1900),
                     lastDate: DateTime(2100),
                   );
+                   //Variablen mit ausgewähltem Datum befüllen
                   if (picked != null)
                     setState(() {
                       dateTimeDay = picked;
@@ -92,7 +99,7 @@ class _DailyState extends State<Daily> {
                 },
               ),
             ),
-            //Anzeige einer Uhr und Auswahl einer Uhrzeit
+            //Auswahl der Uhrzeit
             Container(
               margin: const EdgeInsets.all(15),
               child: TextField(
@@ -101,6 +108,7 @@ class _DailyState extends State<Daily> {
                 decoration: InputDecoration(
                     hoverColor: Colors.blue[200],
                     hintText: 'Zeitpunkt auswählen'),
+                //Variablen mit ausgewählter Zeit befüllen
                 onTap: () async {
                   var time = await showTimePicker(
                     initialTime: TimeOfDay.now(),
@@ -115,7 +123,6 @@ class _DailyState extends State<Daily> {
                 },
               ),
             ),
-            //Abstand
             Divider(
               height: 15,
             ),
@@ -158,7 +165,7 @@ class _DailyState extends State<Daily> {
                 },
               ),
             ),
-            //Aufruf der erstellen Sportwidget
+            //Darstellung der auswählbaren Sporticon von der Klasse StatusWidget --> siehe config/widget/widgetSport.dart
             Row(
               children: [
                 SportWidget(widget.key, 'sportart', 'Joggen', 59070,
@@ -213,13 +220,14 @@ class _DailyState extends State<Daily> {
     );
   }
 }
-//
+//Funktion Speichert alle Ausgewählten relevanten Felder als SportObjekt --> model/healthy/sportModel
 void saveSport(
   List<StatusIcons> statusList,
   TimeOfDay timeOfDayTime,
   String durationSport,
   DateTime dateTimeDay,
 ) {
+  //User-ID wird von Firebase geholt
   final User user = FirebaseAuth.instance.currentUser;
   final uid = user.uid;
   StatusIcons sportIcon =
@@ -229,11 +237,12 @@ void saveSport(
     time: timeOfDayTime,
     durationSport: durationSport,
     sportIcon: sportIcon,
-    datum: dateTimeDay,
+    dateDay: dateTimeDay,
   );
+  //Sport-Objekt wird der Funktion sportSetup() übergeben
   sportSetup(sport);
 }
-
+//Das Sport-Objekt wird in Firestore in einer Sammlung namens sport gespeichert
 Future<void> sportSetup(Sport sport) async {
   CollectionReference sportref = FirebaseFirestore.instance.collection('sport');
   sportref.add(sport.toJson());

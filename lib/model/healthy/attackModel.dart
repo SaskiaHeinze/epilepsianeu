@@ -1,9 +1,9 @@
-import 'package:epilepsia/model/healthy/mood.dart';
+import 'package:epilepsia/model/healthy/IconModel.dart';
 import 'package:flutter/material.dart';
 
 class Attack {
   String userid;
-  DateTime datum;
+  DateTime dateDay;
   TimeOfDay time;
   String duration;
   String attackArt;
@@ -12,7 +12,7 @@ class Attack {
 
   Attack(
       {this.userid,
-      this.datum,
+      this.dateDay,
       this.time,
       this.duration,
       this.symptom,
@@ -20,12 +20,10 @@ class Attack {
       this.notice});
 
   factory Attack.fromJson(Map<String, dynamic> data) {
-    DateTime _datumfirebase = data['datum'].toDate();
-    var datum = data['datum'].toDate();
-    var uhrZeit = data["uhrZeit"];
+    var dateDay = data['dateDay'].toDate();
     return Attack(
       userid: data['id'],
-      datum: datum,
+      dateDay: dateDay,
       duration: data['duration'],
       attackArt: data['attackArt'],
       symptom: StatusIcons.fromJson(data['symptom']),
@@ -37,7 +35,7 @@ class Attack {
     Map _symptom = this.symptom != null ? this.symptom.toJson() : null;
     return {
       'id': userid,
-      'datum': datum,
+      'dateDay': dateDay,
       'uhrZeit': time.toString(),
       'duration': duration,
       'attackArt': attackArt,

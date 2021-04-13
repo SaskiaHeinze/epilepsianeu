@@ -17,6 +17,7 @@ class _MedicationState extends State<MedicationWidget> {
   Widget build(BuildContext context) {
    return DefaultTabController(
   length: 2,
+  //Anzeige der oberen Leiste (Appbar) bei Medikation
   child: Scaffold(
     appBar: AppBar(
       backgroundColor: Colors.red[300],
@@ -31,6 +32,7 @@ class _MedicationState extends State<MedicationWidget> {
         ],
       ),
     ),
+  //Zuordnung der Klassen bei der Appbar
   body: TabBarView(
            children:[
              AddMedication(),

@@ -4,7 +4,7 @@ class Duration {
 
   const Duration(this.id, this.duration);
 }
-
+//Dropdownmenü für Auswahl der Sportdauer
 const List<Duration> getDuration = <Duration>[
   Duration(1, '10 Minuten'),
   Duration(2, '20 Minuten'),

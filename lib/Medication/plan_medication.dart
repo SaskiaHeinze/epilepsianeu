@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:epilepsia/model/medication/medication.dart';
+import 'package:epilepsia/model/medication/medicationModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +25,19 @@ class _PlanMedicationState extends State<PlanMedication> {
 
   @override
   Widget build(BuildContext context) {
+    //Aufbau des Medikamentenplan
     return FutureBuilder(
+        
         future: getMedicationData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
+            //Anzeige eines Ladekreis
             return CupertinoActivityIndicator(
               radius: 20,
             );
-          } else {
+          }
+          //Bei vorhandenen Daten werden diese angezeigt 
+          else {
             var data = snapshot.data as List<Medication>;
             print(data);
             if (data.isNotEmpty) {
@@ -45,7 +50,8 @@ class _PlanMedicationState extends State<PlanMedication> {
                       return Card(
                         color: item.color.color,
                         margin:
-                            const EdgeInsets.only(right: 30, left: 30, top: 20),
+                            const EdgeInsets.only(right: 25, left: 25, top: 20),
+                        //Anzeige des Medikaments 
                         child: Column(
                           children: [
                             Row(
@@ -75,29 +81,25 @@ class _PlanMedicationState extends State<PlanMedication> {
                       );
                     }),
               );
-            } else {
-              return Text("Keine Daten");
-            }
+            } 
           }
         });
   }
 }
-
+//Auslesen der Medikamentendaten aus der Datenbank anhand der Sammlung und der userId
 Future<List<Medication>> getMedicationData() async {
   List<Medication> list = <Medication>[];
-  // print("list");
+//Medikamentdaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
   result = await firestore
       .collection("medication")
-      //.where("datum", isEqualTo: date)
-      //.where("id", isEqualTo: user.uid)
+      .where("id", isEqualTo: user.uid)
       .get();
-
+    //gefundene Daten werden ausgegeben
   result.docs.forEach((result) {
     var data = result.data();
     print(data);
     Medication medication = new Medication.fromJson(data);
     list.add(medication);
   });
-  // print(list);
   return list;
 }

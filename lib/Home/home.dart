@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epilepsia/config/router.dart';
 import 'package:epilepsia/config/widget/widget.dart';
-import 'package:epilepsia/model/healthy/mood.dart';
+import 'package:epilepsia/model/healthy/IconModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../model/meeting.dart';
+import '../model/meetingModel.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -25,19 +25,23 @@ String fullName = '';
 DateFormat format = DateFormat('dd.MM.yyyy');
 TimeOfDay from;
 TimeOfDay to;
-DateTime datum;
+DateTime dateDay;
 List<StatusIcons> statusList = <StatusIcons>[];
 
 class _HomeState extends State<Home> {
   List<StatusIcons> statusList = <StatusIcons>[];
   @override
   Widget build(BuildContext context) {
+    //PopUp mit Termin erstellen geht auf
+    //PopUp wird erst bei klick auf Termin ausgelöst
     final AlertDialog dialog = AlertDialog(
       title: Text('Termin hinzufügen'),
       content: Form(
+        //Funktion ermöglich das Scrollen innerhalb der App
         child: SingleChildScrollView(
           child: Column(
             children: [
+              //Name für den Termin kann gesetzt werden
               TextField(
                   controller: nameController,
                   decoration: InputDecoration(
@@ -50,12 +54,14 @@ class _HomeState extends State<Home> {
                       fullName = text;
                     });
                   }),
+              //Tag für den Termin kann ausgewählt werden
               Container(
                 child: TextField(
                   readOnly: true,
                   controller: dateController,
                   decoration: InputDecoration(
                       hoverColor: Colors.blue[200], hintText: 'Datum'),
+                      //Variablen mit ausgewähltem Datum befüllen
                   onTap: () async {
                     var date = await showDatePicker(
                         context: context,
@@ -66,16 +72,18 @@ class _HomeState extends State<Home> {
                         TextEditingValue(text: format.format(date));
 
                     setState(() {
-                      datum = date;
+                      dateDay = date;
                     });
                   },
                 ),
               ),
+              //Uhrzeit von kann ausgewählt werden
               TextField(
                 readOnly: true,
                 controller: timeController,
                 decoration: InputDecoration(
                     hoverColor: Colors.blue[200], hintText: 'Von'),
+                    //Variablen mit ausgewählter Zeit befüllen
                 onTap: () async {
                   var time = await showTimePicker(
                     initialTime: TimeOfDay.now(),
@@ -89,11 +97,13 @@ class _HomeState extends State<Home> {
                   });
                 },
               ),
+              //Uhrzeit bis kann ausgewählt werden
               TextField(
                 readOnly: true,
                 controller: timeController1,
                 decoration: InputDecoration(
                     hoverColor: Colors.blue[200], hintText: 'Bis'),
+                    //Variablen mit ausgewählter Zeit befüllen
                 onTap: () async {
                   var time = await showTimePicker(
                     initialTime: TimeOfDay.now(),
@@ -106,6 +116,7 @@ class _HomeState extends State<Home> {
                   });
                 },
               ),
+              //Icons für die Art de Termins kann ausgewählt werden
               Row(
                 children: [
                   StatusWidget(
@@ -151,17 +162,18 @@ class _HomeState extends State<Home> {
           onPressed: () => Navigator.pop(context),
           child: Text('Abbrechen'),
         ),
+        //Bei Hinzufügen-Button wird die Funktion saveMeeting ausgeführt 
         TextButton(
           onPressed: () {
-            print(statusList);
-            saveMeeting(null, fullName, datum, from, to, statusList);
+            //ausgewählte Felder werden übergeben
+            saveMeeting(null, fullName, dateDay, from, to, statusList);
             Navigator.pop(context);
           },
           child: Text("Hinzufügen"),
         ),
       ],
     );
-
+    //Aufbau der Startseite
     return Container(
       padding: EdgeInsets.only(bottom: 2),
       color: Colors.blueGrey[50],
@@ -180,7 +192,8 @@ class _HomeState extends State<Home> {
                     children: [
                       Row(
                         children: [
-                          Align(
+                           //Willkommen Text oben auf der Startseite
+                           Align(
                             alignment: Alignment.center,
                             child: Text(
                               'WILLKOMMEN!',
@@ -191,6 +204,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ),
+                          //Anzeige unseres Logos
                           Container(
                             margin: const EdgeInsets.only(
                               left: 50,
@@ -204,24 +218,25 @@ class _HomeState extends State<Home> {
                           ),
                         ],
                       ),
+                       //Anzeige unseres Spruches
                       Align(
                         alignment: Alignment.center,
                         child: Text(
                           '"Wer den Tag mit einem Lächeln beginnt, hat ihn bereits gewonnen."',
                           style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.black54,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
                   )),
+                //Anzeige der Kategorie der Medikation
               Container(
                 width: 400,
                 margin: EdgeInsets.only(top: 10, bottom: 5, left: 1, right: 1),
                 height: 100,
-                //decoration: BoxDecoration(border: Border.all(),borderRadius: BorderRadius.all(Radius.circular(20)),),
                 child: Row(
                   children: [
                     Container(
@@ -237,7 +252,7 @@ class _HomeState extends State<Home> {
                                   children: [
                                     Text(
                                       "Medikation",
-                                      //textAlign: TextAlign.left,
+                                      
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 25,
@@ -246,7 +261,7 @@ class _HomeState extends State<Home> {
                                   ],
                                 ))
                           ],
-                        ),
+                        ),//Weiterleitung zu Medication/medication
                         onPressed: () {
                           Navigator.pushNamed(context, routeMedication);
                         },
@@ -267,11 +282,11 @@ class _HomeState extends State<Home> {
                 ),
                 color: Colors.red[300],
               ),
+              //Anzeige der Kategorie der Gesundheit
               Container(
                 width: 400,
                 margin: EdgeInsets.only(top: 10, bottom: 5, left: 1, right: 1),
                 height: 100,
-                //decoration: BoxDecoration(border: Border.all(),borderRadius: BorderRadius.all(Radius.circular(20)),),
                 child: Row(
                   children: [
                     Container(
@@ -290,7 +305,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ],
-                        ),
+                        ),//Weiterleitung zu Health/stateOfHealth
                         onPressed: () {
                           Navigator.pushNamed(context, routeHealth);
                         },
@@ -311,11 +326,11 @@ class _HomeState extends State<Home> {
                 ),
                 color: Colors.teal[300],
               ),
+              //Anzeige der Kategorie der Sport
               Container(
                 width: 400,
                 margin: EdgeInsets.only(top: 10, bottom: 5, left: 1, right: 1),
                 height: 100,
-                //decoration: BoxDecoration(border: Border.all(),borderRadius: BorderRadius.all(Radius.circular(20)),),
                 child: Row(
                   children: [
                     Container(
@@ -335,6 +350,7 @@ class _HomeState extends State<Home> {
                             ),
                           ],
                         ),
+                        //Weiterleitung zu Sport/sport
                         onPressed: () {
                           Navigator.pushNamed(context, routeDaily);
                         },
@@ -355,11 +371,11 @@ class _HomeState extends State<Home> {
                 ),
                 color: Colors.amberAccent[700],
               ),
+              //Anzeige der Kategorie der "Termin erstellen"
               Container(
                 width: 400,
                 margin: EdgeInsets.only(top: 10, bottom: 5, left: 1, right: 1),
                 height: 100,
-                //decoration: BoxDecoration(border: Border.all(),borderRadius: BorderRadius.all(Radius.circular(20)),),
                 child: Row(
                   children: [
                     Container(
@@ -378,7 +394,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ],
-                        ),
+                        ),//PopUp wird angezeigt
                         onPressed: () {
                           showDialog<void>(
                               context: context, builder: (context) => dialog);
@@ -407,7 +423,7 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
+//Funktion Speichert alle Ausgewählten relevanten Felder als TerminObjekt --> model/meetingModel
 void saveMeeting(
   String userid,
   String name,
@@ -426,10 +442,12 @@ void saveMeeting(
       to: to,
       isAllDay: false,
       background: statusList[0].color,
+        //User-ID wird von Firebase geholt
       userId: FirebaseAuth.instance.currentUser.uid);
+  //Termin-Objekt wird der Funktion meetingSetup() übergeben
   meetingSetup(meeting);
 }
-
+//Das Termin-Objekt wird in Firestore in einer Sammlung namens meeting gespeichert
 Future<void> meetingSetup(Meeting meeting) async {
   CollectionReference meetingref =
       FirebaseFirestore.instance.collection('meeting');

@@ -1,5 +1,6 @@
-import 'package:epilepsia/model/healthy/status.dart';
-import 'package:epilepsia/model/healthy/mood.dart';
+import 'package:epilepsia/login/bottomNavigationBar.dart';
+import 'package:epilepsia/model/healthy/StateOfHealthModel.dart';
+import 'package:epilepsia/model/healthy/IconModel.dart';
 import 'package:epilepsia/config/widget/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,26 +19,27 @@ class StateOfHealth extends StatefulWidget {
 
 class _StateOfHealthState extends State<StateOfHealth> {
   List<StatusIcons> statusList = <StatusIcons>[];
-
   TimeOfDay timeOfDayTime;
   DateTime dateTimeDay;
 
   Widget build(BuildContext context) {
     DateFormat format = DateFormat('dd.MM.yyyy');
     return Scaffold(
+      //Funktion ermöglich das Scrollen innerhalb der App
       body: SingleChildScrollView(
           child: Container(
               margin: const EdgeInsets.all(15.0),
               child: Column(
                 children: [
+                  //Datum auswählen
                   Container(
-                  
                     child: TextField(
                       readOnly: true,
                       controller: dateController,
                       decoration: InputDecoration(
                           hoverColor: Colors.blue[200],
                           hintText: 'Tag auswählen'),
+                      //Variablen mit ausgewählten Datum befüllen
                       onTap: () async {
                         var date = await showDatePicker(
                             context: context,
@@ -54,12 +56,14 @@ class _StateOfHealthState extends State<StateOfHealth> {
                       },
                     ),
                   ),
+                  //Uhrzeit auswählen
                   TextField(
                     readOnly: true,
                     controller: timeController,
                     decoration: InputDecoration(
                         hoverColor: Colors.blue[200],
                         hintText: 'Zeitpunkt auswählen'),
+                    //Variablen mit ausgewählter Zeit befüllen
                     onTap: () async {
                       var time = await showTimePicker(
                         initialTime: TimeOfDay.now(),
@@ -76,6 +80,7 @@ class _StateOfHealthState extends State<StateOfHealth> {
                     height: 40,
                     thickness: 3,
                   ),
+                  //Stimmungsicons zum Auswählen von der Klasse StatusWidget --> siehe config/widget/widget.dart
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -93,7 +98,6 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'Glücklich',
                         59842,
                         Colors.red[300],
-                      
                         statusList,
                       ),
                       StatusWidget(
@@ -101,8 +105,7 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'mood',
                         'Neutral',
                         59841,
-                         Colors.red[300],
-                     
+                        Colors.red[300],
                         statusList,
                       ),
                       StatusWidget(
@@ -110,8 +113,7 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'mood',
                         'Traurig',
                         58361,
-                          Colors.red[300],
-                        
+                        Colors.red[300],
                         statusList,
                       ),
                       StatusWidget(
@@ -120,7 +122,6 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'Gereizt',
                         58365,
                         Colors.red[300],
-                        
                         statusList,
                       ),
                     ],
@@ -129,6 +130,7 @@ class _StateOfHealthState extends State<StateOfHealth> {
                     height: 10,
                     thickness: 3,
                   ),
+                  //Symptomicons zum Auswählen von der Klasse StatusWidget --> siehe config/widget/widget.dart
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -146,7 +148,6 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'Zucken',
                         58869,
                         Colors.teal[300],
-                       
                         statusList,
                       ),
                       StatusWidget(
@@ -155,7 +156,6 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'Bewusstlos',
                         58419,
                         Colors.teal[300],
-                       
                         statusList,
                       ),
                       StatusWidget(
@@ -164,7 +164,6 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'Krämpfe',
                         60118,
                         Colors.teal[300],
-                    
                         statusList,
                       ),
                       StatusWidget(
@@ -173,12 +172,11 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'Fieber',
                         58534,
                         Colors.teal[300],
-                     
                         statusList,
                       ),
                     ],
                   ),
-                 
+                  //Stressicons zum Auswählen von der Klasse StatusWidget --> siehe config/widget/widget.dart
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -196,7 +194,6 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'Entspannt',
                         60130,
                         Colors.amberAccent[700],
-                      
                         statusList,
                       ),
                       StatusWidget(
@@ -205,7 +202,6 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'Unruhe',
                         60126,
                         Colors.amberAccent[700],
-                     
                         statusList,
                       ),
                       StatusWidget(
@@ -214,7 +210,6 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'Anspannung',
                         58869,
                         Colors.amberAccent[700],
-                    
                         statusList,
                       ),
                       StatusWidget(
@@ -223,61 +218,61 @@ class _StateOfHealthState extends State<StateOfHealth> {
                         'Stress',
                         59222,
                         Colors.amberAccent[700],
-                      
                         statusList,
                       ),
                     ],
                   ),
-                  // Divider(
-                  //   height: 50,
-                  //   thickness: 3,
-                  // ),
-                
-                  Visibility(
-                    visible: true,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        print(statusList);
-                        saveStatus(statusList, dateTimeDay, timeOfDayTime);
-                      },
-                      icon: Icon(Icons.add, size: 18),
-                label: Text("Hinzufügen"),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.grey[400],
-                  onPrimary: Colors.black,
-                  onSurface: Colors.grey,
-                ),
+                  //Bei Hinzufügen-Button wird die Funktion saveStatus ausgeführt 
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      //Debug
+                      print(statusList);
+                      //ausgewählte Felder werden übergeben
+                      saveStatus(statusList, dateTimeDay, timeOfDayTime);
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              BottomNavigation()));
+                    },
+                    icon: Icon(Icons.add, size: 18),
+                    label: Text("Hinzufügen"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.grey[400],
+                      onPrimary: Colors.black,
+                      onSurface: Colors.grey,
                     ),
-                  )
+                  ),
                 ],
               ))),
     );
   }
-
-  void saveStatus(List<StatusIcons> statusList, 
-  DateTime dateTimeDay,
+  //Funktion Speichert alle Ausgewählten relevanten Felder als StatusObjekt --> model/healthy/StateOfHealthModel
+  void saveStatus(List<StatusIcons> statusList, DateTime dateTimeDay,
       TimeOfDay timeOfDayTime) {
-         final User user = FirebaseAuth.instance.currentUser;
-      final uid= user.uid;
-    StatusIcons mood =
-        statusList.firstWhere((element) => element.id == "mood");
+        //User-ID wird von Firebase geholt
+    final User user = FirebaseAuth.instance.currentUser;
+    final uid = user.uid;
+    StatusIcons mood = statusList.firstWhere((element) => element.id == "mood");
     StatusIcons symptom =
         statusList.firstWhere((element) => element.id == "symptom");
     StatusIcons stress =
         statusList.firstWhere((element) => element.id == "stress");
-    Status status = new Status(
+    StateOfHealthModel status = new StateOfHealthModel(
         userid: uid,
-        datum: dateTimeDay,
+        dateDay: dateTimeDay,
         uhrzeit: timeOfDayTime,
         mood: mood,
         symptom: symptom,
         stress: stress);
+        //Debug
     print(status.toJson());
+    //Schlaf-Objekt wird der Funktion statusSetup() übergeben
     statusSetup(status);
   }
 }
-
-Future<void> statusSetup(Status status) async {
+//Das Status-Objekt wird in Firestore in einer Sammlung namens status gespeichert
+Future<void> statusSetup(StateOfHealthModel status) async {
   CollectionReference statusref =
       FirebaseFirestore.instance.collection('status');
   statusref.add(status.toJson());

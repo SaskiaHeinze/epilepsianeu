@@ -13,9 +13,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUp extends State<SignUp> {
   final auth = FirebaseAuth.instance;
-  // AuthenticationService authenticationService =
-  //     AuthenticationService(firebaseAuth: FirebaseAuth.instance);
-  // final GoogleSignIn googleSignIn = GoogleSignIn();
+
   String email;
   String password;
   String confirm;
@@ -30,6 +28,7 @@ class _SignUp extends State<SignUp> {
         title: Text("Neuanmeldung"),
         backgroundColor: Colors.grey[400],
       ),
+      //Funktion ermöglich das Scrollen innerhalb der App
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -37,10 +36,10 @@ class _SignUp extends State<SignUp> {
               margin: EdgeInsets.only(top: 20, bottom: 20),
               width: 400,
               height: 200,
-              child: Image.asset('assets/image/image.png'),
+              child: Image.asset('assets/image/logo.png'),
             ),
             Padding(
-              //Email Textfield
+              //Email Textfeld zum Eingeben der Emailadresse
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 decoration: InputDecoration(
@@ -54,7 +53,7 @@ class _SignUp extends State<SignUp> {
               ),
             ),
             Padding(
-              //Password Textfield
+              //Password Textfeld zum Eingeben des Passworts
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
@@ -70,7 +69,7 @@ class _SignUp extends State<SignUp> {
               ),
             ),
             Padding(
-              //Password Textfield
+              //Passwordbestätigungs Textfeld
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
@@ -86,54 +85,40 @@ class _SignUp extends State<SignUp> {
               ),
             ),
             Container(
-              //Show Error Messages
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              child: Text(
-                message,
-                style: TextStyle(color: Colors.grey[400]),
-              ),
-            ),
-            Container(
-              //Login Buttom
-              //Starting the Login process
+              //Login Button
+              //Start des Login-Prozesses
               margin: EdgeInsets.all(20),
               width: double.infinity,
               decoration: BoxDecoration(
                   color: Colors.grey[400], borderRadius: BorderRadius.circular(5)),
               child: TextButton(
                 onPressed: () {
-                  signUp(email, password, confirm);
-                  //Navigator.pushNamed(context, routePrimaryHome);
+                  //eingegebene Daten werden der Funktion signUp() übergeben
+                 signUp(email, password, confirm);
+                  
                 },
                 child: Text(
-                  'Neu Anmelden',
+                  'Neuanmeldung',
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
-            ),
-            Divider(
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              height: 100,
             ),
           ],
         ),
       ),
     );
   }
-
+//Registrierungsprozess mit Firebase
   void signUp(String email, String password, String password2) async {
     var errorMessage;
+    //Überprüfung ob Passwort und Bestätigung übereinstimmen
     if (password == password2) {
       try {
+        //Funktion zur Registrierung durch das Plugin firebase_auth
         await auth.createUserWithEmailAndPassword(
             email: email, password: password);
       } on FirebaseAuthException catch (e) {
+        //bei falscher Eingabe der Daten wird eine entsprechende Fehlermeldung als PopUp ausgegeben
         errorMessage = e.message;
         showDialog(
             context: context,
@@ -155,6 +140,7 @@ class _SignUp extends State<SignUp> {
       }
       if (message == '') {
         Navigator.pushNamed(context, routePrimaryHome);
+        //debug
         print('success');
       }
     } else {

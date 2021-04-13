@@ -1,15 +1,13 @@
 import 'package:epilepsia/config/color.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart' hide Router;
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'config/router.dart';
 
-
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //Firebase wird initialisiert bevor die App gestartet wird
   await Firebase.initializeApp();
   runApp(MyApp());
 }
@@ -17,15 +15,17 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+//Initalisierung der App
     return MaterialApp(
         title: 'epilepsia',
         theme: ThemeData(
-         fontFamily: "Nunito",
+          fontFamily: "Nunito",
           primarySwatch: background,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: MyHomePage(),
         onGenerateRoute: Router.generateRoute,
+        //Bei Start der App wird der Login Screen angezeigt
         initialRoute: routeLogin);
   }
 }
@@ -40,138 +40,38 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final auth = FirebaseAuth.instance;
-
-
-  //Deklaireren von Variablen
-  String email;
-  String password;
-  String message = "";
-  bool loginFail = false;
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(""),
-        backgroundColor: Colors.grey[400],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 20, bottom: 20),
-              width: 400,
-              height: 150,
-              child: Image.asset('assets/image/logo.png'),
-            ),
-            Padding(
-              //Email Textfield
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
-                  hintText: 'Geben Sie eine gültige Email ein.',
-                ),
-                onChanged: (String value) {
-                  email = value;
-                },
-              ),
-            ),
-            Padding(
-              //Password Textfield
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Passwort',
-                  hintText: 'Geben Sie ihr Passwort ein.',
-                ),
-                onChanged: (String value) {
-                  password = value;
-                },
-              ),
-            ),
-            Container(
-              //Fehlermeldung
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              child: Text(
-                message,
-                style: TextStyle(color: Colors.grey[400]),
-              ),
-            ),
-            Container(
-              //Login Buttom
-              //Login-Prozess starten
-              margin: EdgeInsets.all(20),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.grey[400], borderRadius: BorderRadius.circular(5)),
-              child: TextButton(
-                onPressed: () {
-                  login(email, password);
-                },
-                child: Text(
-                  'Login',
-                  style: TextStyle(color: Colors.grey[800], fontSize: 20),
-                ),
-              ),
-            ),
-            Divider(
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            TextButton(
-              //Buttom to navigate -> SignUpView
-              onPressed: () {
-                Navigator.pushNamed(context, routeSignUp);
-              },
-              child: Text('Neuer Kunde? Erstellen Sie ein neues Konto',style: TextStyle(color: Colors.grey[800], fontSize: 15) ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return Container(width: 0.0, height: 0.0);
   }
+}
 
-  void signUp(String email, String password) {
-    showDialog(context: context, builder: (_) => AlertDialog());
-    auth.createUserWithEmailAndPassword(email: email, password: password);
-  }
+//Initialisierung der Notificationfunktion und Verbindung zu OneSignal
+Future<void> initPlatformState() async {
+  //benötigt für die Registrierung bei OneSignal
+  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
-  void login(String email, String password) async {
-    String errorMessage = '';
-    try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      errorMessage = e.message;
-      showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: Text('Es ist was schief gelaufen'),
-                content: Text(errorMessage),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      "Verstanden",
-                      style: TextStyle(color: Colors.amberAccent[700]),
-                    ),
-                  ),
-                ],
-              ));
-    }
-    if (errorMessage == '') {
-      Navigator.pushNamed(context, routePrimaryHome);
-    }
-  }
+  OneSignal.shared
+      .setNotificationReceivedHandler((OSNotification notification) {});
+
+  OneSignal.shared
+      .setNotificationOpenedHandler((OSNotificationOpenedResult result) {});
+
+  OneSignal.shared
+      .setSubscriptionObserver((OSSubscriptionStateChanges changes) {});
+
+  OneSignal.shared.setEmailSubscriptionObserver(
+      (OSEmailSubscriptionStateChanges emailChanges) {});
+
+//Die App wird bei OneSignal initialisiert
+  OneSignal.shared.init("b2398587-9bd3-4215-a54c-36cd18191eb2");
+
+  OneSignal.shared
+      .setInFocusDisplayType(OSNotificationDisplayType.notification);
 }

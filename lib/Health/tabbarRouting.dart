@@ -17,6 +17,7 @@ class _RoutingState extends State<Routing> {
     return DefaultTabController(
   length: 3,
   child: Scaffold(
+    //Anzeige der oberen Leiste (Appbar) bei Gesundheit
     appBar: AppBar(
       backgroundColor: Colors.teal[300],
       bottom: TabBar(
@@ -30,6 +31,7 @@ class _RoutingState extends State<Routing> {
         ],
       ),
     ),
+  //Zuordnung der Klassen bei der Appbar
   body: TabBarView(
            children:[
              StateOfHealth(),

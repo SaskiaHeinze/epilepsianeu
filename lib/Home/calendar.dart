@@ -1,12 +1,11 @@
 //Importieren von Flutter-Pakete
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:epilepsia/login/loginview.dart';
-import 'package:epilepsia/model/meeting.dart';
-import 'package:epilepsia/model/test.dart';
+import 'package:epilepsia/login/bottomNavigationBar.dart';
+import 'package:epilepsia/model/meetingModel.dart';
+import 'package:epilepsia/model/meetingdataSource.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
 
 class Calendar extends StatefulWidget {
   Calendar({
@@ -17,11 +16,9 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
-  //Erstellen einer Meeting-Liste
   List<Meeting> meetings;
   //Anlegen einer QuerySnapshot-Klasse --> Enthält die Ergebnisse einer Abfrage
   CalendarDataSource querySnapshot;
-  //
   dynamic data;
 
   @override
@@ -31,14 +28,14 @@ class _CalendarState extends State<Calendar> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: FutureBuilder(
-        future: _getDataSource(),
+        future: _getDataSource(meetings),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.data != null) {
             List<Meeting> collection = snapshot.data;
-            //Erstellen eines Kalenders
+            //Erstellen eines Kalenders aus dem Plugin sysfunktion_flutter_calendar
             return SfCalendar(
+              //Monatsansicht
               view: CalendarView.month,
               dataSource: MeetingDataSource(collection),
               monthViewSettings: MonthViewSettings(
@@ -73,63 +70,68 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  //Funktion zum Löschen eines Kalendereintrags
+//Wenn ein Termin ausgewählt wird kann dieser gelöscht werden
   void calendarTapped(CalendarTapDetails calendarTapDetails) {
     if (calendarTapDetails.targetElement == CalendarElement.agenda ||
         calendarTapDetails.targetElement == CalendarElement.appointment) {
       final Meeting appointment = calendarTapDetails.appointments[0];
-      
-      //Dialogfenster wird geöffnet
+      //Debug
+      print(appointment.toJson());
+      print(appointment.id);
       showDialog(
           context: context,
           builder: (_) {
+            //Popup, welcher die Möglichkeit gibt den Termin zu löschen
             return AlertDialog(
               title: Text('Soll dieser Eintrag gelöscht werden?'),
               actions: [
                 TextButton(
-                  //Patrick
-                  onPressed: () => Navigator.push(
-                      context,
-                      //Benutzer wird zur Startseite weitergeleitet
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginView())),
+                  onPressed: () {
+                    deleteMeeting(appointment);
+                  },
                   child: Text('Ja'),
-                ), 
+                ),
                 TextButton(
-                  onPressed: () =>
-                      Navigator.pop(context, false), 
+                  onPressed: () => Navigator.pop(context, false),
                   child: Text('Nein'),
                 ),
               ],
             );
-          }).then((value) {
-        if (value == null) return;
-        //Termin wird aus der Datenbank gelöscht
-        if (value) {
-          FirebaseFirestore firestore = FirebaseFirestore.instance;
-          firestore.collection("meeting").doc(appointment.id).delete();
-          print("delete");
-        } else {}
-      });
+          });
     }
   }
-  //Auslesen der Termindaten aus der Datenbank anhand der collection und der userId
-  Future<List<Meeting>> _getDataSource() async {
-    meetings = <Meeting>[];
 
+  //Wenn Ja ausgewählt wurde wird der Termin in Firestore anhand der id gelöscht
+  void deleteMeeting(Meeting appointment) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    var result = await firestore
-        .collection("meeting")
-        .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
-        .get();
-    result.docs.forEach((result) {
-      var data = result.data();
-      var id = result.id;
-      Meeting meeting = Meeting.fromJson(data);
-      meeting.id = id;
-      meetings.add(meeting);
-    });
-    return meetings;
+    firestore.collection('meeting').doc(appointment.id).delete();
+    //Debug
+    print("delete");
+    //Der User wird wieder auf die Startseite zurückgeleitet
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => BottomNavigation()));
   }
+}
+
+//Auslesen der Termindaten aus der Datenbank anhand der Sammlung und der userId
+Future<List<Meeting>> _getDataSource(List meetings) async {
+  meetings = <Meeting>[];
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  //Termindaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
+  var result = await firestore
+      .collection("meeting")
+      .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+      .get();
+  //gefundene Daten werden ausgegeben
+  result.docs.forEach((result) {
+    var data = result.data();
+    var id = result.id;
+    Meeting meeting = Meeting.fromJson(data);
+    meeting.id = id;
+    meetings.add(meeting);
+  });
+  return meetings;
 }
