@@ -4,6 +4,7 @@ class Diary {
 
   Diary({this.id, this.daySelection});
 
+  ///Erhaltene Daten werden aus JSON extrahiert
   factory Diary.fromJson(Map<String, dynamic> data) {
     DateTime dateTime = DateTime.parse(data['daySelection']);
     return Diary(
@@ -12,6 +13,7 @@ class Diary {
     );
   }
 
+  ///Daten Werden in JSON geschrieben
   Map<String, dynamic> toJson() {
     return {
       'id': id,

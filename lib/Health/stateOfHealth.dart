@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-FirebaseFirestore firestore = FirebaseFirestore.instance;
 final timeController = TextEditingController();
 final dateController = TextEditingController();
 
@@ -222,7 +221,7 @@ class _StateOfHealthState extends State<StateOfHealth> {
                       ),
                     ],
                   ),
-                  //Bei Hinzufügen-Button wird die Funktion saveStatus ausgeführt 
+                  //Bei Hinzufügen-Button wird die Funktion saveStatus ausgeführt
                   ElevatedButton.icon(
                     onPressed: () {
                       //Debug
@@ -230,10 +229,10 @@ class _StateOfHealthState extends State<StateOfHealth> {
                       //ausgewählte Felder werden übergeben
                       saveStatus(statusList, dateTimeDay, timeOfDayTime);
                       Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              BottomNavigation()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  BottomNavigation()));
                     },
                     icon: Icon(Icons.add, size: 18),
                     label: Text("Hinzufügen"),
@@ -247,10 +246,11 @@ class _StateOfHealthState extends State<StateOfHealth> {
               ))),
     );
   }
-  //Funktion Speichert alle Ausgewählten relevanten Felder als StatusObjekt --> model/healthy/StateOfHealthModel
+
+  ///Funktion Speichert alle Ausgewählten relevanten Felder als StatusObjekt --> model/healthy/StateOfHealthModel
   void saveStatus(List<StatusIcons> statusList, DateTime dateTimeDay,
       TimeOfDay timeOfDayTime) {
-        //User-ID wird von Firebase geholt
+    //User-ID wird von Firebase geholt
     final User user = FirebaseAuth.instance.currentUser;
     final uid = user.uid;
     StatusIcons mood = statusList.firstWhere((element) => element.id == "mood");
@@ -265,13 +265,14 @@ class _StateOfHealthState extends State<StateOfHealth> {
         mood: mood,
         symptom: symptom,
         stress: stress);
-        //Debug
+    //Debug
     print(status.toJson());
     //Schlaf-Objekt wird der Funktion statusSetup() übergeben
     statusSetup(status);
   }
 }
-//Das Status-Objekt wird in Firestore in einer Sammlung namens status gespeichert
+
+///Das Status-Objekt wird in Firestore in einer Sammlung namens status gespeichert
 Future<void> statusSetup(StateOfHealthModel status) async {
   CollectionReference statusref =
       FirebaseFirestore.instance.collection('status');

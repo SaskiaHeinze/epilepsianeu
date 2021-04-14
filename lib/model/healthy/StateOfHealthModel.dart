@@ -17,6 +17,7 @@ class StateOfHealthModel {
       this.symptom,
       this.stress});
 
+  ///Erhaltene Daten werden aus JSON extrahiert
   factory StateOfHealthModel.fromJson(Map<String, dynamic> data) {
     var dateDay = data['dateDay'].toDate();
     return StateOfHealthModel(
@@ -28,6 +29,7 @@ class StateOfHealthModel {
     );
   }
 
+  ///Daten Werden in JSON geschrieben
   Map<String, dynamic> toJson() {
     Map _mood = this.mood != null ? this.mood.toJson() : null;
     Map _symptom = this.symptom != null ? this.symptom.toJson() : null;

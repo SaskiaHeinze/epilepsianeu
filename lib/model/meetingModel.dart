@@ -10,7 +10,8 @@ class Meeting {
       this.to,
       this.isAllDay,
       this.background,
-      this.userId, this.id});
+      this.userId,
+      this.id});
 
   /// Event name which is equivalent to subject property of [Appointment].
   String eventName;
@@ -29,6 +30,7 @@ class Meeting {
   String userId;
   String id;
 
+  ///Erhaltene Daten werden aus JSON extrahiert
   factory Meeting.fromJson(Map<String, dynamic> data) {
     DateTime dateTimeFrom = DateTime.parse(data['from']);
     DateTime dateTimeTo = DateTime.parse(data['to']);
@@ -43,8 +45,8 @@ class Meeting {
     );
   }
 
+  ///Daten Werden in JSON geschrieben
   Map<String, dynamic> toJson() {
-    // Map _farbe = this.farbe != null ? this.farbe.toJson() : null;
     return {
       'eventName': eventName,
       'from': from.toIso8601String(),

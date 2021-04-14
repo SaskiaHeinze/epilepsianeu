@@ -12,8 +12,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-
- final auth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
 
   //Deklarieren von Variablen
   String email;
@@ -69,14 +68,14 @@ class _LoginViewState extends State<LoginView> {
                 },
               ),
             ),
-         
             Container(
               //Login Button
               //Login-Prozess starten
               margin: EdgeInsets.all(20),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.grey[400], borderRadius: BorderRadius.circular(5)),
+                  color: Colors.grey[400],
+                  borderRadius: BorderRadius.circular(5)),
               child: TextButton(
                 onPressed: () {
                   //Ausgefüllte Felder werden an login() gegeben
@@ -99,14 +98,16 @@ class _LoginViewState extends State<LoginView> {
               onPressed: () {
                 Navigator.pushNamed(context, routeSignUp);
               },
-              child: Text('Neuer Kunde? Erstellen Sie ein neues Konto',style: TextStyle(color: Colors.grey[800], fontSize: 15) ),
+              child: Text('Neuer Kunde? Erstellen Sie ein neues Konto',
+                  style: TextStyle(color: Colors.grey[800], fontSize: 15)),
             ),
           ],
         ),
       ),
     );
   }
-//Loginprozess mit Firebase
+
+  ///Loginprozess mit Firebase
   void login(String email, String password) async {
     String errorMessage = '';
     try {
@@ -122,7 +123,7 @@ class _LoginViewState extends State<LoginView> {
                 content: Text(errorMessage),
                 actions: [
                   TextButton(
-                    onPressed: () { 
+                    onPressed: () {
                       Navigator.of(context).pop();
                     },
                     child: Text(

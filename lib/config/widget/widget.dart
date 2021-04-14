@@ -25,7 +25,7 @@ class _StatusWidgetState extends State<StatusWidget> {
   bool change = false;
   bool _isEnable = false;
 
-  //Objekte werden in die Struktur eingefügt
+  ///Objekte werden in die Struktur eingefügt
   @override
   void initState() {
     text = widget.text;
@@ -94,7 +94,7 @@ class _StatusWidgetState extends State<StatusWidget> {
                           color: Colors.black,
                           width: 2,
                         );
-                         //Das ausgewählte Icon-Button wird im Widget in der statusList hinterlegt
+                        //Das ausgewählte Icon-Button wird im Widget in der statusList hinterlegt
                         widget.statusList.add(statusIcon);
                       }
                     },

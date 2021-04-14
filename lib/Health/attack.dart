@@ -22,7 +22,7 @@ class _AttackwidgetState extends State<Attackwidget> {
   TextEditingController nameController = TextEditingController();
   String fullName = '';
 
-  //Dropdownmenü für Anfallsdauer
+  ///Dropdownmenü für Anfallsdauer
   List<String> duration = <String>[
     "10 Minuten",
     "20 Minuten",
@@ -32,7 +32,7 @@ class _AttackwidgetState extends State<Attackwidget> {
     "90 Minuten"
   ];
 
-  //Dropdownmenü für Anfallsarten
+  ///Dropdownmenü für Anfallsarten
   List<String> attackArt = <String>[
     "Vorgefühl",
     "Aura",
@@ -312,7 +312,7 @@ class _AttackwidgetState extends State<Attackwidget> {
     );
   }
 
-//Funktion Speichert alle Ausgewählten relevanten Felder als AnfallObjekt --> model/healthy/attackModel
+  ///Funktion Speichert alle Ausgewählten relevanten Felder als AnfallObjekt --> model/healthy/attackModel
   void saveAttack(
       List<StatusIcons> statusList,
       DateTime dateTimeDay,
@@ -339,7 +339,7 @@ class _AttackwidgetState extends State<Attackwidget> {
   }
 }
 
-//Das Anfall-Objekt wird in Firestore in einer Sammlung namens attack gespeichert
+///Das Anfall-Objekt wird in Firestore in einer Sammlung namens attack gespeichert
 Future<void> attackSetup(Attack attack) async {
   CollectionReference attackref =
       FirebaseFirestore.instance.collection('attack');

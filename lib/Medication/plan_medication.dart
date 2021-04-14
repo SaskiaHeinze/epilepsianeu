@@ -27,7 +27,6 @@ class _PlanMedicationState extends State<PlanMedication> {
   Widget build(BuildContext context) {
     //Aufbau des Medikamentenplan
     return FutureBuilder(
-        
         future: getMedicationData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
@@ -36,7 +35,7 @@ class _PlanMedicationState extends State<PlanMedication> {
               radius: 20,
             );
           }
-          //Bei vorhandenen Daten werden diese angezeigt 
+          //Bei vorhandenen Daten werden diese angezeigt
           else {
             var data = snapshot.data as List<Medication>;
             print(data);
@@ -51,7 +50,7 @@ class _PlanMedicationState extends State<PlanMedication> {
                         color: item.color.color,
                         margin:
                             const EdgeInsets.only(right: 25, left: 25, top: 20),
-                        //Anzeige des Medikaments 
+                        //Anzeige des Medikaments
                         child: Column(
                           children: [
                             Row(
@@ -81,20 +80,22 @@ class _PlanMedicationState extends State<PlanMedication> {
                       );
                     }),
               );
-            } 
+            }
           }
         });
   }
 }
-//Auslesen der Medikamentendaten aus der Datenbank anhand der Sammlung und der userId
+
+///Auslesen der Medikamentendaten aus der Datenbank anhand der Sammlung und der userId
 Future<List<Medication>> getMedicationData() async {
   List<Medication> list = <Medication>[];
-//Medikamentdaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
+
+  //Medikamentdaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
   result = await firestore
       .collection("medication")
       .where("id", isEqualTo: user.uid)
       .get();
-    //gefundene Daten werden ausgegeben
+  //gefundene Daten werden ausgegeben
   result.docs.forEach((result) {
     var data = result.data();
     print(data);

@@ -1,4 +1,3 @@
-//Importieren von Flutter-Pakete
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epilepsia/login/bottomNavigationBar.dart';
 import 'package:epilepsia/model/meetingModel.dart';
@@ -17,7 +16,8 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> {
   List<Meeting> meetings;
-  //Anlegen einer QuerySnapshot-Klasse --> Enthält die Ergebnisse einer Abfrage
+
+  ///Anlegen einer QuerySnapshot-Klasse --> Enthält die Ergebnisse einer Abfrage
   CalendarDataSource querySnapshot;
   dynamic data;
 
@@ -70,7 +70,7 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-//Wenn ein Termin ausgewählt wird kann dieser gelöscht werden
+  ///Wenn ein Termin ausgewählt wird kann dieser gelöscht werden
   void calendarTapped(CalendarTapDetails calendarTapDetails) {
     if (calendarTapDetails.targetElement == CalendarElement.agenda ||
         calendarTapDetails.targetElement == CalendarElement.appointment) {
@@ -101,7 +101,7 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
-  //Wenn Ja ausgewählt wurde wird der Termin in Firestore anhand der id gelöscht
+  ///Wenn Ja ausgewählt wurde wird der Termin in Firestore anhand der id gelöscht
   void deleteMeeting(Meeting appointment) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     firestore.collection('meeting').doc(appointment.id).delete();
@@ -115,7 +115,7 @@ class _CalendarState extends State<Calendar> {
   }
 }
 
-//Auslesen der Termindaten aus der Datenbank anhand der Sammlung und der userId
+///Auslesen der Termindaten aus der Datenbank anhand der Sammlung und der userId
 Future<List<Meeting>> _getDataSource(List meetings) async {
   meetings = <Meeting>[];
 

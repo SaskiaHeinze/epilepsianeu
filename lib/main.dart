@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-//Initialisierung der Notificationfunktion und Verbindung zu OneSignal
+///Initialisierung der Notificationfunktion und Verbindung zu OneSignal
 Future<void> initPlatformState() async {
   //benötigt für die Registrierung bei OneSignal
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);

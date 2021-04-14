@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../config/widget/widgetsport.dart';
 
-
-
 class Daily extends StatefulWidget {
   Daily({
     Key key,
@@ -25,7 +23,8 @@ class _DailyState extends State<Daily> {
   TextEditingController nameController = TextEditingController();
   String fullName = '';
   TimeOfDay timeOfDayTime;
-  //Erstellung einer Liste von der Sportdauer
+
+  ///Erstellung einer Liste von der Sportdauer
   List<String> sportDuration = <String>[
     "10 Minuten",
     "20 Minuten",
@@ -57,7 +56,7 @@ class _DailyState extends State<Daily> {
                 onPressed: () {
                   saveSport(statusList, timeOfDayTime, _dropDownSportDuration,
                       dateTimeDay);
-                      Navigator.push(
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) =>
@@ -88,7 +87,7 @@ class _DailyState extends State<Daily> {
                     firstDate: DateTime(1900),
                     lastDate: DateTime(2100),
                   );
-                   //Variablen mit ausgewähltem Datum befüllen
+                  //Variablen mit ausgewähltem Datum befüllen
                   if (picked != null)
                     setState(() {
                       dateTimeDay = picked;
@@ -220,7 +219,8 @@ class _DailyState extends State<Daily> {
     );
   }
 }
-//Funktion Speichert alle Ausgewählten relevanten Felder als SportObjekt --> model/healthy/sportModel
+
+///Funktion Speichert alle Ausgewählten relevanten Felder als SportObjekt --> model/healthy/sportModel
 void saveSport(
   List<StatusIcons> statusList,
   TimeOfDay timeOfDayTime,
@@ -242,7 +242,8 @@ void saveSport(
   //Sport-Objekt wird der Funktion sportSetup() übergeben
   sportSetup(sport);
 }
-//Das Sport-Objekt wird in Firestore in einer Sammlung namens sport gespeichert
+
+///Das Sport-Objekt wird in Firestore in einer Sammlung namens sport gespeichert
 Future<void> sportSetup(Sport sport) async {
   CollectionReference sportref = FirebaseFirestore.instance.collection('sport');
   sportref.add(sport.toJson());

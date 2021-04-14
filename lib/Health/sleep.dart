@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import '../config/widget/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-FirebaseFirestore firestore = FirebaseFirestore.instance;
 final timeController = TextEditingController();
 final timeController1 = TextEditingController();
 final dateController = TextEditingController();
@@ -116,7 +115,7 @@ class _SleepState extends State<SleepWidget> {
               );
               timeController1.text = endDate.format(context);
               setState(() {
-                 //Setzt die Minuten und Stunden der Schlafdauer und berücksichtigt auch einen Tageswechsel
+                //Setzt die Minuten und Stunden der Schlafdauer und berücksichtigt auch einen Tageswechsel
                 if (startDate.hour <= endDate.hour) {
                   hours = (endDate.hour - startDate.hour).toString();
                 } else {
@@ -195,16 +194,15 @@ class _SleepState extends State<SleepWidget> {
               ),
             ],
           ),
-          //Bei Hinzufügen-Button wird die Funktion saveSleep ausgeführt 
+          //Bei Hinzufügen-Button wird die Funktion saveSleep ausgeführt
           ElevatedButton.icon(
             onPressed: () {
               //ausgewählte Felder werden übergeben
               saveSleep(statusList, dateTimeDay, sleepDuration);
               Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              BottomNavigation()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => BottomNavigation()));
             },
             icon: Icon(Icons.add, size: 18),
             label: Text("Hinzufügen"),
@@ -217,7 +215,7 @@ class _SleepState extends State<SleepWidget> {
         ]));
   }
 
-  //Funktion Speichert alle Ausgewählten relevanten Felder als SchlafObjekt --> model/healthy/sleepModel
+  ///Funktion Speichert alle Ausgewählten relevanten Felder als SchlafObjekt --> model/healthy/sleepModel
   void saveSleep(List<StatusIcons> statusList, DateTime dateTimeDay,
       String durationSleep) {
     //User-ID wird von Firebase geholt
@@ -239,7 +237,8 @@ class _SleepState extends State<SleepWidget> {
     print(statusList[0].toJson());
   }
 }
-//Das Schlaf-Objekt wird in Firestore in einer Sammlung namens sleep gespeichert
+
+///Das Schlaf-Objekt wird in Firestore in einer Sammlung namens sleep gespeichert
 Future<void> sleepSetup(Sleep sleep) async {
   CollectionReference sleepref = FirebaseFirestore.instance.collection('sleep');
   sleepref.add(sleep.toJson());

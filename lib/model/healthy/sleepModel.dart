@@ -1,6 +1,4 @@
-
 import 'package:epilepsia/model/healthy/IconModel.dart';
-
 
 class Sleep {
   String userid;
@@ -10,6 +8,7 @@ class Sleep {
 
   Sleep({this.userid, this.dateDay, this.durationSleep, this.sleepicon});
 
+  ///Erhaltene Daten werden aus JSON extrahiert
   factory Sleep.fromJson(Map<String, dynamic> data) {
     var dateDay = data['dateDay'].toDate();
     return Sleep(
@@ -20,12 +19,13 @@ class Sleep {
     );
   }
 
+  ///Daten Werden in JSON geschrieben
   Map<String, dynamic> toJson() {
     Map _sleep = this.sleepicon != null ? this.sleepicon.toJson() : null;
     return {
       'id': userid,
       'dateDay': dateDay,
-      'durationSleep' : durationSleep,
+      'durationSleep': durationSleep,
       'sleep': _sleep,
     };
   }

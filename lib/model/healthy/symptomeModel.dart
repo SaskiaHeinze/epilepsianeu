@@ -8,6 +8,7 @@ class Symptom {
 
   Symptom({this.id, this.name, this.iconData, this.color});
 
+  ///Erhaltene Daten werden aus JSON extrahiert
   factory Symptom.fromJson(Map<String, dynamic> data) {
     return Symptom(
       id: data['id'],
@@ -17,6 +18,7 @@ class Symptom {
     );
   }
 
+  ///Daten Werden in JSON geschrieben
   Map<String, dynamic> toJson() {
     return {
       'id': id,

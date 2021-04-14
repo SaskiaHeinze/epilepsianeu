@@ -6,8 +6,9 @@ class Stress {
   int iconData;
   Color color;
 
-  Stress({this.id,this.name, this.iconData, this.color});
+  Stress({this.id, this.name, this.iconData, this.color});
 
+  ///Erhaltene Daten werden aus JSON extrahiert
   factory Stress.fromJson(Map<String, dynamic> data) {
     return Stress(
       id: data['id'],
@@ -17,6 +18,7 @@ class Stress {
     );
   }
 
+  ///Daten Werden in JSON geschrieben
   Map<String, dynamic> toJson() {
     return {
       'id': id,

@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
                   controller: dateController,
                   decoration: InputDecoration(
                       hoverColor: Colors.blue[200], hintText: 'Datum'),
-                      //Variablen mit ausgewähltem Datum befüllen
+                  //Variablen mit ausgewähltem Datum befüllen
                   onTap: () async {
                     var date = await showDatePicker(
                         context: context,
@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
                 controller: timeController,
                 decoration: InputDecoration(
                     hoverColor: Colors.blue[200], hintText: 'Von'),
-                    //Variablen mit ausgewählter Zeit befüllen
+                //Variablen mit ausgewählter Zeit befüllen
                 onTap: () async {
                   var time = await showTimePicker(
                     initialTime: TimeOfDay.now(),
@@ -103,7 +103,7 @@ class _HomeState extends State<Home> {
                 controller: timeController1,
                 decoration: InputDecoration(
                     hoverColor: Colors.blue[200], hintText: 'Bis'),
-                    //Variablen mit ausgewählter Zeit befüllen
+                //Variablen mit ausgewählter Zeit befüllen
                 onTap: () async {
                   var time = await showTimePicker(
                     initialTime: TimeOfDay.now(),
@@ -162,7 +162,7 @@ class _HomeState extends State<Home> {
           onPressed: () => Navigator.pop(context),
           child: Text('Abbrechen'),
         ),
-        //Bei Hinzufügen-Button wird die Funktion saveMeeting ausgeführt 
+        //Bei Hinzufügen-Button wird die Funktion saveMeeting ausgeführt
         TextButton(
           onPressed: () {
             //ausgewählte Felder werden übergeben
@@ -192,8 +192,8 @@ class _HomeState extends State<Home> {
                     children: [
                       Row(
                         children: [
-                           //Willkommen Text oben auf der Startseite
-                           Align(
+                          //Willkommen Text oben auf der Startseite
+                          Align(
                             alignment: Alignment.center,
                             child: Text(
                               'WILLKOMMEN!',
@@ -218,7 +218,7 @@ class _HomeState extends State<Home> {
                           ),
                         ],
                       ),
-                       //Anzeige unseres Spruches
+                      //Anzeige unseres Spruches
                       Align(
                         alignment: Alignment.center,
                         child: Text(
@@ -232,7 +232,7 @@ class _HomeState extends State<Home> {
                       ),
                     ],
                   )),
-                //Anzeige der Kategorie der Medikation
+              //Anzeige der Kategorie der Medikation
               Container(
                 width: 400,
                 margin: EdgeInsets.only(top: 10, bottom: 5, left: 1, right: 1),
@@ -252,7 +252,6 @@ class _HomeState extends State<Home> {
                                   children: [
                                     Text(
                                       "Medikation",
-                                      
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 25,
@@ -261,7 +260,7 @@ class _HomeState extends State<Home> {
                                   ],
                                 ))
                           ],
-                        ),//Weiterleitung zu Medication/medication
+                        ), //Weiterleitung zu Medication/medication
                         onPressed: () {
                           Navigator.pushNamed(context, routeMedication);
                         },
@@ -305,7 +304,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ],
-                        ),//Weiterleitung zu Health/stateOfHealth
+                        ), //Weiterleitung zu Health/stateOfHealth
                         onPressed: () {
                           Navigator.pushNamed(context, routeHealth);
                         },
@@ -394,7 +393,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                           ],
-                        ),//PopUp wird angezeigt
+                        ), //PopUp wird angezeigt
                         onPressed: () {
                           showDialog<void>(
                               context: context, builder: (context) => dialog);
@@ -423,7 +422,8 @@ class _HomeState extends State<Home> {
     );
   }
 }
-//Funktion Speichert alle Ausgewählten relevanten Felder als TerminObjekt --> model/meetingModel
+
+///Funktion Speichert alle Ausgewählten relevanten Felder als TerminObjekt --> model/meetingModel
 void saveMeeting(
   String userid,
   String name,
@@ -442,12 +442,13 @@ void saveMeeting(
       to: to,
       isAllDay: false,
       background: statusList[0].color,
-        //User-ID wird von Firebase geholt
+      //User-ID wird von Firebase geholt
       userId: FirebaseAuth.instance.currentUser.uid);
   //Termin-Objekt wird der Funktion meetingSetup() übergeben
   meetingSetup(meeting);
 }
-//Das Termin-Objekt wird in Firestore in einer Sammlung namens meeting gespeichert
+
+///Das Termin-Objekt wird in Firestore in einer Sammlung namens meeting gespeichert
 Future<void> meetingSetup(Meeting meeting) async {
   CollectionReference meetingref =
       FirebaseFirestore.instance.collection('meeting');

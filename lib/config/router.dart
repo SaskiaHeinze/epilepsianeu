@@ -10,16 +10,31 @@ import 'package:epilepsia/loginview.dart';
 import 'package:flutter/material.dart';
 
 //Wert für Routenpfad wird gesetzt
+///Startseite
 const String routeHome = '/home';
+
+///Gesundheit
 const String routeHealth = '/routing';
+
+///Sport
 const String routeDaily = '/daily';
+
+///Medikation
 const String routeMedication = '/medication';
+
+///Login
 const String routeLogin = '/loginview';
+
+///Untere Navigationsleiste
 const String routePrimaryHome = '/bottomNavigationBar';
+
+///Neuanmeldung
 const String routeSignUp = '/signup';
+
+///Kalender
 const String routeCalendar = '/calendar';
 
-//Routennamen werden zugehörigen Klassen zugeordnet
+///Routennamen werden zugehörigen Klassen zugeordnet
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -39,8 +54,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => BottomNavigation());
       case routeSignUp:
         return MaterialPageRoute(builder: (_) => SignUp());
-        
-      //Bei undefinierter Route 
+
+      //Bei undefinierter Route
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

@@ -19,6 +19,7 @@ class Attack {
       this.attackArt,
       this.notice});
 
+  ///Erhaltene Daten werden aus JSON extrahiert
   factory Attack.fromJson(Map<String, dynamic> data) {
     var dateDay = data['dateDay'].toDate();
     return Attack(
@@ -31,6 +32,7 @@ class Attack {
     );
   }
 
+  ///Daten Werden in JSON geschrieben
   Map<String, dynamic> toJson() {
     Map _symptom = this.symptom != null ? this.symptom.toJson() : null;
     return {

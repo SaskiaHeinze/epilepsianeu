@@ -90,12 +90,12 @@ class _SignUp extends State<SignUp> {
               margin: EdgeInsets.all(20),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.grey[400], borderRadius: BorderRadius.circular(5)),
+                  color: Colors.grey[400],
+                  borderRadius: BorderRadius.circular(5)),
               child: TextButton(
                 onPressed: () {
                   //eingegebene Daten werden der Funktion signUp() übergeben
-                 signUp(email, password, confirm);
-                  
+                  signUp(email, password, confirm);
                 },
                 child: Text(
                   'Neuanmeldung',
@@ -108,7 +108,8 @@ class _SignUp extends State<SignUp> {
       ),
     );
   }
-//Registrierungsprozess mit Firebase
+
+  ///Registrierungsprozess mit Firebase
   void signUp(String email, String password, String password2) async {
     var errorMessage;
     //Überprüfung ob Passwort und Bestätigung übereinstimmen

@@ -5,15 +5,13 @@ import 'package:epilepsia/Home/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 class BottomNavigation extends StatefulWidget {
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
 }
+
 class _BottomNavigationState extends State<BottomNavigation> {
-   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     Home(),
     Calendar(),
@@ -30,7 +28,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   //Aufbau der unteren Leiste (BottomNavigationBar)
   @override
   Widget build(BuildContext context) {
-        return Scaffold(
+    return Scaffold(
       body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white60,
@@ -62,8 +60,4 @@ class _BottomNavigationState extends State<BottomNavigation> {
       ),
     );
   }
-
-
-  
-  }
-
+}

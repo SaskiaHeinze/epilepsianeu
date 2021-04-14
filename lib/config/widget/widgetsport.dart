@@ -24,7 +24,7 @@ class _SportWidgetState extends State<SportWidget> {
   Border border;
   bool change = false;
 
-  //Objekte werden in die Struktur eingefügt
+  ///Objekte werden in die Struktur eingefügt
   @override
   void initState() {
     text = widget.text;
@@ -36,7 +36,7 @@ class _SportWidgetState extends State<SportWidget> {
       width: 0,
       style: BorderStyle.solid,
     );
-    
+
     super.initState();
   }
 
@@ -55,10 +55,10 @@ class _SportWidgetState extends State<SportWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //Symbol für die Sportaktivität
-                Icon(
-                  IconData(iconData, fontFamily: 'MaterialIcons'),
-                  color: Colors.black,
-                ),
+              Icon(
+                IconData(iconData, fontFamily: 'MaterialIcons'),
+                color: Colors.black,
+              ),
               Text(
                 text,
                 textAlign: TextAlign.center,
@@ -71,12 +71,11 @@ class _SportWidgetState extends State<SportWidget> {
             setState(() {
               StatusIcons statusIcon = new StatusIcons(
                   id: id, color: color, name: text, iconData: iconData);
-              // Ausgewählte Sportaktivität wird gesucht und Werte eingetragen    
+              // Ausgewählte Sportaktivität wird gesucht und Werte eingetragen
               if ((widget.statusList.singleWhere(
                       (element) => element.id == statusIcon.id,
                       orElse: () => null)) !=
                   null) {
-                
                 if ((widget.statusList.singleWhere(
                         (element) => element.name == statusIcon.name,
                         orElse: () => null)) !=
@@ -90,7 +89,7 @@ class _SportWidgetState extends State<SportWidget> {
                   widget.statusList.removeWhere(
                       (element) => element.name == statusIcon.name);
                 }
-              } 
+              }
               //Text-Button bekommt beim Auswählen eine schwarze Umrandung
               else {
                 change = true;

@@ -1,5 +1,4 @@
 import 'package:epilepsia/model/healthy/IconModel.dart';
-import 'package:flutter/material.dart';
 
 class Medication {
   String userid;
@@ -8,7 +7,7 @@ class Medication {
   StatusIcons icon;
   StatusIcons color;
   String repeat;
-  String time; 
+  String time;
   DateTime begin;
   DateTime end;
 
@@ -24,8 +23,8 @@ class Medication {
     this.begin,
   });
 
+  ///Erhaltene Daten werden aus JSON extrahiert
   factory Medication.fromJson(Map<String, dynamic> data) {
-
     DateTime end;
     if (data['end'] == null) {
       end = null;
@@ -39,7 +38,6 @@ class Medication {
       begin = DateTime.parse(data['begin']);
     }
     return Medication(
-      
       userid: data['id'],
       name: data['name'],
       dose: data['dosis'],
@@ -51,6 +49,7 @@ class Medication {
     );
   }
 
+  ///Daten Werden in JSON geschrieben
   Map<String, dynamic> toJson() {
     Map _icon = this.icon != null ? this.icon.toJson() : null;
     Map _color = this.color != null ? this.color.toJson() : null;

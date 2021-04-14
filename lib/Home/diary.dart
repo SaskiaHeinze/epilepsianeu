@@ -42,11 +42,6 @@ class _DiaryState extends State<Diary> {
 
   @override
   Widget build(BuildContext context) {
-    final timeController = TextEditingController();
-    final timeController1 = TextEditingController();
-    final dateController = TextEditingController();
-    TextEditingController nameController = TextEditingController();
-    String dateSelectText = '';
     DateFormat format = DateFormat('dd.MM.yyyy');
     var date;
 
@@ -273,10 +268,10 @@ class _DiaryState extends State<Diary> {
     ));
   }
 
-  //Auslesen der Statusdaten aus der Datenbank anhand der Sammlung und der userId
+  ///Auslesen der Statusdaten aus der Datenbank anhand der Sammlung und der userId
   Future<List<StateOfHealthModel>> getData(DateTime date) async {
     List<StateOfHealthModel> list = <StateOfHealthModel>[];
-    Timestamp myTimeStamp = Timestamp.fromDate(date);
+
     //Statusdaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
     result = await firestore
         .collection("status")
@@ -301,7 +296,6 @@ class _DiaryState extends State<Diary> {
   Future<List<Attack>> getAttackData(DateTime date) async {
     List<Attack> list = <Attack>[];
 
-    Timestamp myTimeStamp = Timestamp.fromDate(date);
     //Anfalldaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
     result = await firestore
         .collection("attack")
@@ -328,7 +322,6 @@ class _DiaryState extends State<Diary> {
   Future<List<Sleep>> getSleepData(DateTime date) async {
     List<Sleep> list = <Sleep>[];
 
-    Timestamp myTimeStamp = Timestamp.fromDate(date);
     //Schlafdaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
     result = await firestore
         .collection("sleep")
@@ -354,7 +347,6 @@ class _DiaryState extends State<Diary> {
   Future<List<Sport>> getSportData(DateTime date) async {
     List<Sport> list = <Sport>[];
 
-    Timestamp myTimeStamp = Timestamp.fromDate(date);
     //Sportdaten werden aus Firestore geholt, bei Übereinstimmung von User-ID mit aktuellem User
     result = await firestore
         .collection("sport")
