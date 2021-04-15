@@ -457,6 +457,7 @@ Future<void> meetingSetup(Meeting meeting) async {
   meetingref.add(meeting.toJson());
 }
 
+///Funktion erstellt eine Notification mithilfe von OneSignal
 Future<void> postNotification(
   String name,
   DateTime begin,
