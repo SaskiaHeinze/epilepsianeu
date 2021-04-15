@@ -5,6 +5,7 @@ import 'package:epilepsia/model/healthy/IconModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../model/meetingModel.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -446,6 +447,7 @@ void saveMeeting(
       userId: FirebaseAuth.instance.currentUser.uid);
   //Termin-Objekt wird der Funktion meetingSetup() übergeben
   meetingSetup(meeting);
+  postNotification(name, from, to);
 }
 
 ///Das Termin-Objekt wird in Firestore in einer Sammlung namens meeting gespeichert
@@ -453,4 +455,29 @@ Future<void> meetingSetup(Meeting meeting) async {
   CollectionReference meetingref =
       FirebaseFirestore.instance.collection('meeting');
   meetingref.add(meeting.toJson());
+}
+
+Future<void> postNotification(
+  String name,
+  DateTime begin,
+  DateTime end,
+) async {
+  String begincontent = begin.hour.toString() + ":" + begin.minute.toString();
+  String endcontent = end.hour.toString() + ":" + end.minute.toString();
+
+  //15 min vor dem Termin wird die Nachricht geschickt
+  DateTime notificationTime = new DateTime(
+      begin.year, begin.month, begin.day, begin.hour - 2, begin.minute - 15);
+  var status = await OneSignal.shared.getPermissionSubscriptionState();
+  //User-ID wird von One Signal geholt
+  var playerId = status.subscriptionStatus.userId;
+  //Notification wird generiert
+  await OneSignal.shared.postNotification(OSCreateNotification(
+      playerIds: [playerId],
+      content: begincontent + " - " + endcontent,
+      heading: name,
+      sendAfter: notificationTime,
+      buttons: [
+        OSActionButton(text: "Alles klar!", id: "id1"),
+      ]));
 }
