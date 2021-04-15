@@ -238,7 +238,7 @@ class _DiaryState extends State<Diary> {
                         itemBuilder: (BuildContext context, int index) {
                           Sport item = sportDataList[index];
                           return ListTile(
-                            title: Text("Du hast heute " +
+                            title: Text("Sie haben heute " +
                                 item.durationSport +
                                 " Sport gemacht"),
                             subtitle: RichText(
