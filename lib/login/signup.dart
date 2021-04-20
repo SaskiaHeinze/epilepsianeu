@@ -1,3 +1,4 @@
+import 'package:epilepsia/config/authenticationService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide Router;
 import '../config/router.dart';
@@ -13,6 +14,8 @@ class SignUp extends StatefulWidget {
 
 class _SignUp extends State<SignUp> {
   final auth = FirebaseAuth.instance;
+  AuthenticationService authenticationService =
+      AuthenticationService(firebaseAuth: FirebaseAuth.instance);
 
   String email;
   String password;
@@ -99,7 +102,7 @@ class _SignUp extends State<SignUp> {
                 },
                 child: Text(
                   'Neuanmeldung',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
               ),
             ),
@@ -116,8 +119,35 @@ class _SignUp extends State<SignUp> {
     if (password == password2) {
       try {
         //Funktion zur Registrierung durch das Plugin firebase_auth
-        await auth.createUserWithEmailAndPassword(
+        var authReturnResult = await authenticationService.createAccount(
             email: email, password: password);
+        if (authReturnResult == "Success") {
+          await auth.currentUser.sendEmailVerification();
+          showDialog(
+            //Show Dialog with information to check the mails
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text('Account bestätigen!'),
+              content: Text(
+                  'Überprüfen Sie Ihr Postfach und bestätigen Sie Ihr neues Konto!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, routeLogin);
+                  },
+                  child: Text(
+                    "Verstanden",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          setState(() {
+            message = authReturnResult;
+          });
+        }
       } on FirebaseAuthException catch (e) {
         //bei falscher Eingabe der Daten wird eine entsprechende Fehlermeldung als PopUp ausgegeben
         errorMessage = e.message;
@@ -138,11 +168,6 @@ class _SignUp extends State<SignUp> {
                     ),
                   ],
                 ));
-      }
-      if (message == '') {
-        Navigator.pushNamed(context, routePrimaryHome);
-        //debug
-        print('success');
       }
     } else {
       showDialog(

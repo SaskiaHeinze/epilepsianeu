@@ -80,6 +80,19 @@ class _PlanMedicationState extends State<PlanMedication> {
                       );
                     }),
               );
+            } else {
+              return Container(
+                child: Column(
+                  children: [
+                    Icon(Icons.warning, size: 60),
+                    Text(
+                      "Keinen Eintrag gefunden!",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text("Bitte Daten speichern!"),
+                  ],
+                ),
+              );
             }
           }
         });

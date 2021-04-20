@@ -34,28 +34,30 @@ class _CalendarState extends State<Calendar> {
           if (snapshot.data != null) {
             List<Meeting> collection = snapshot.data;
             //Erstellen eines Kalenders aus dem Plugin sysfunktion_flutter_calendar
-            return SfCalendar(
-              //Monatsansicht
-              view: CalendarView.month,
-              dataSource: MeetingDataSource(collection),
-              monthViewSettings: MonthViewSettings(
-                  showAgenda: true,
-                  agendaViewHeight: 200,
-                  appointmentDisplayMode:
-                      MonthAppointmentDisplayMode.appointment),
-              firstDayOfWeek: 1,
-              todayHighlightColor: Colors.red.shade200,
-              backgroundColor: Colors.blueGrey[50],
-              showNavigationArrow: true,
-              cellEndPadding: 5,
-              selectionDecoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(color: Colors.blue.shade200, width: 2),
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
-                shape: BoxShape.rectangle,
+            return Container(
+              margin: EdgeInsets.only(top: 50),
+              child: SfCalendar(
+                //Monatsansicht
+                view: CalendarView.month,
+                dataSource: MeetingDataSource(collection),
+                monthViewSettings: MonthViewSettings(
+                    showAgenda: true,
+                    agendaViewHeight: 200,
+                    appointmentDisplayMode:
+                        MonthAppointmentDisplayMode.appointment),
+                firstDayOfWeek: 1,
+                todayHighlightColor: Colors.red.shade200,
+                showNavigationArrow: true,
+                cellEndPadding: 5,
+                selectionDecoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(color: Colors.blue.shade200, width: 2),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  shape: BoxShape.rectangle,
+                ),
+                //Termin wird ausgewählt und Funktion calendarTapped wird ausgeführt
+                onTap: calendarTapped,
               ),
-              //Termin wird ausgewählt und Funktion calendarTapped wird ausgeführt
-              onTap: calendarTapped,
             );
           } else {
             //Anzeige eines Ladekreis, wenn Daten gezogen werden

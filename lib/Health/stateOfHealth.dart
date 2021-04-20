@@ -125,10 +125,6 @@ class _StateOfHealthState extends State<StateOfHealth> {
                       ),
                     ],
                   ),
-                  Divider(
-                    height: 10,
-                    thickness: 3,
-                  ),
                   //Symptomicons zum Auswählen von der Klasse StatusWidget --> siehe config/widget/widget.dart
                   Align(
                     alignment: Alignment.centerLeft,
@@ -144,16 +140,16 @@ class _StateOfHealthState extends State<StateOfHealth> {
                       StatusWidget(
                         widget.key,
                         'symptom',
-                        'Zucken',
-                        58869,
+                        'Symptomfrei',
+                        58964,
                         Colors.teal[300],
                         statusList,
                       ),
                       StatusWidget(
                         widget.key,
                         'symptom',
-                        'Bewusstlos',
-                        58419,
+                        'Zucken',
+                        58869,
                         Colors.teal[300],
                         statusList,
                       ),
@@ -221,6 +217,10 @@ class _StateOfHealthState extends State<StateOfHealth> {
                       ),
                     ],
                   ),
+                  Divider(
+                    height: 30,
+                    thickness: 3,
+                  ),
                   //Bei Hinzufügen-Button wird die Funktion saveStatus ausgeführt
                   ElevatedButton.icon(
                     onPressed: () {
@@ -234,7 +234,7 @@ class _StateOfHealthState extends State<StateOfHealth> {
                               builder: (BuildContext context) =>
                                   BottomNavigation()));
                     },
-                    icon: Icon(Icons.add, size: 18),
+                    icon: Icon(Icons.add, size: 16),
                     label: Text("Hinzufügen"),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.grey[400],

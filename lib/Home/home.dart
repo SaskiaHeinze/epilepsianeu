@@ -49,7 +49,9 @@ class _HomeState extends State<Home> {
                     suffixIcon: Icon(Icons.drive_file_rename_outline),
                     border: OutlineInputBorder(),
                     labelText: 'Terminname',
+                  
                   ),
+          
                   onChanged: (text) {
                     setState(() {
                       fullName = text;
@@ -69,8 +71,7 @@ class _HomeState extends State<Home> {
                         initialDate: DateTime.now(),
                         firstDate: DateTime(1900),
                         lastDate: DateTime(2100));
-                    dateController.value =
-                        TextEditingValue(text: format.format(date));
+                    dateController.text = format.format(date);
 
                     setState(() {
                       dateDay = date;
@@ -168,6 +169,13 @@ class _HomeState extends State<Home> {
           onPressed: () {
             //ausgewählte Felder werden übergeben
             saveMeeting(null, fullName, dateDay, from, to, statusList);
+
+            nameController.text = "";
+            timeController1.text = "";
+            timeController.text = "";
+            dateController.text = "";
+            statusList = <StatusIcons>[];
+
             Navigator.pop(context);
           },
           child: Text("Hinzufügen"),
@@ -457,7 +465,6 @@ Future<void> meetingSetup(Meeting meeting) async {
   meetingref.add(meeting.toJson());
 }
 
-///Funktion erstellt eine Notification mithilfe von OneSignal
 Future<void> postNotification(
   String name,
   DateTime begin,

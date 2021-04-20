@@ -210,33 +210,36 @@ class _AddMedicationState extends State<AddMedication> {
             ],
           ),
           //Uhrzeit auswählen
-          Container(
-            margin: const EdgeInsets.only(
-              left: 15,
+          Visibility(
+            visible: isSwitched,
+            child: Container(
+              margin: const EdgeInsets.only(
+                left: 15,
+              ),
+              height: 50,
+              child: ListView.builder(
+                  itemCount: itemCount,
+                  itemBuilder: (BuildContext context, int index) {
+                    return TextField(
+                      readOnly: true,
+                      controller: timeController,
+                      decoration: InputDecoration(
+                          hoverColor: Colors.blue[200],
+                          hintText: 'Uhrzeit auswählen'),
+                      //Variablen mit ausgewählter Zeit befüllen
+                      onTap: () async {
+                        var time = await showTimePicker(
+                          initialTime: TimeOfDay.now(),
+                          context: context,
+                        );
+                        timeController.text = time.format(context);
+                        setState(() {
+                          timeOfDayTime = time;
+                        });
+                      },
+                    );
+                  }),
             ),
-            height: 50,
-            child: ListView.builder(
-                itemCount: itemCount,
-                itemBuilder: (BuildContext context, int index) {
-                  return TextField(
-                    readOnly: true,
-                    controller: timeController,
-                    decoration: InputDecoration(
-                        hoverColor: Colors.blue[200],
-                        hintText: 'Uhrzeit auswählen'),
-                    //Variablen mit ausgewählter Zeit befüllen
-                    onTap: () async {
-                      var time = await showTimePicker(
-                        initialTime: TimeOfDay.now(),
-                        context: context,
-                      );
-                      timeController.text = time.format(context);
-                      setState(() {
-                        timeOfDayTime = time;
-                      });
-                    },
-                  );
-                }),
           ),
           //Dropdownmenü für die Auswahl der Wiederholungen
           Container(
