@@ -44,7 +44,7 @@ class _StatusWidgetState extends State<StatusWidget> {
     return Expanded(
       child: Container(
         margin: EdgeInsets.only(top: 10, bottom: 1, left: 10, right: 10),
-        height: 90,
+        height: 110,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -106,9 +106,9 @@ class _StatusWidgetState extends State<StatusWidget> {
             Visibility(
               visible: _isEnable,
               child: Container(
-                margin: EdgeInsets.only(top: 5, bottom: 1, left: 5, right: 5),
+                margin: EdgeInsets.only(top: 1, bottom: 1, left: 5, right: 5),
                 child: Text("Bitte ein Spiel spielen!",
-                    style: TextStyle(color: Colors.red[300], fontSize: 11)),
+                    style: TextStyle(color: Colors.red[300], fontSize: 9)),
               ),
             ),
             Container(
